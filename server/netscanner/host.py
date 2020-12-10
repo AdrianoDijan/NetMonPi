@@ -3,16 +3,73 @@
 import nmap3
 import netifaces as ni
 import ipaddress
+from concurrent.futures import ThreadPoolExecutor
+from mac_vendor_lookup import MacLookup
+import json
+import logging
+
 
 class Host():
-    def __init__(self, ip=ipaddress.IPv4Address("0.0.0.0"), mac="00:00:00:00:00:00", portlist=[]):
-        self.ip = ip
-        self.mac = mac
-        self.ports = portlist
+    def __init__(self, ip, mac):
+        self._ip = ip
+        self._mac = mac
+        self._vendor = MacLookup().lookup(self._mac)
+        logging.info("New host created [IP: {}, MAC: {}, Vendor: {}]".format(self._ip, self._mac, self._vendor))
+        self._services = []
+        self.getOpenPorts()
+        self.getOSInfo()
+
+    def __str__(self):
+        return "IP: {0} MAC: {1} OS: {2} Services: {3}".format(self._ip, "", "", [str(service) for service in self._services])
+
+    def as_dict(self):
+        return {
+            "ip": str(self._ip),
+            "mac": str(self._mac),
+            "vendor": str(self._vendor),
+            "services": [service.as_dict() for service in self._services]
+        }
 
     def getOpenPorts(self):
-        nmap = nmap3.NmapHostDiscovery()
-        ports = nmap.nmap_portscan_only(str(self.ip))
-        for port in ports[self.ip]:
-            self.ports.append({"portid": port["portid"], "protocol": port["protocol"], "service": port["service"]["name"]})
-        
+        logging.info("Scanning open ports for host {}".format(str(self._ip)))
+        nmap = nmap3.Nmap()
+        ports = nmap.nmap_version_detection(str(self._ip))
+        try:
+            for port in ports:
+                portid = port["port"]
+                protocol = port["protocol"]
+                try:
+                    product = port["service"]["product"]
+                    version = port["service"]["version"]
+                except:
+                    product = "UNKNOWN"
+                    version = "UNKNOWN"
+                logging.info("New service found [Port: {}, Protocol: {}]".format(portid, protocol))
+                self._services.append(Service(product, version, portid, protocol))
+        except:
+            logging.error("Error scanning open ports, host: {}".format(str(self._ip)))
+
+    def getOSInfo(self):
+        logging.info("Getting OS info for host {}".format(str(self._ip)))
+        nmap = nmap3.Nmap()
+        results = nmap.nmap_os_detection(str(self._ip))
+        logging.info(results)
+
+
+class Service():
+    def __init__(self, product, version, port, protocol):
+        self._product = product
+        self._version = version
+        self._port = port
+        self._protocol = protocol
+
+    def __str__(self):
+        return "Product: {}, Version: {}, Port: {}, Protocol: {}".format(self._product, self._version, self._port, self._protocol)
+
+    def as_dict(self):
+        return {
+            "product": self._product,
+            "version": self._version,
+            "port": self._port,
+            "protocol": self._protocol
+        }
