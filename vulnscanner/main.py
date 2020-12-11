@@ -1,16 +1,15 @@
 from vulnscanner.description import VulnDescription
 from vulnscanner.findCve import GetCveNumbers
 from vulnscanner.referenceData import ReferenceData
+import json
 
 def main():
-    dict_test = {
-        "product": "OpenSSH",
-        "version": "None",
-        "port": "22",
-        "protocol": "tcp"
-    }
-    cveList = GetCveNumbers(dict_test["product"], None, None, None, None).baseScoreList
-    print(cveList)
+    cveList = GetCveNumbers("Mikrotik", None, None, None, None).baseScoreList
+    for item in cveList:
+        for key, value in item.items():
+            print(key, ' : ', value)
+        print("\n\n")
+
 
 
 if __name__ == "__main__":
