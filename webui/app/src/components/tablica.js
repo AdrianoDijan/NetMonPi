@@ -10,7 +10,7 @@ class Tablica extends React.Component {
     render() {
 
         return(
-            <Table variant="dark">
+            <Table variant="dark" className="table">
             <thead>
               <tr>
                 <th>#</th>
