@@ -18,7 +18,6 @@ class Network():
             ifaddr + '/' + netmask).network.network_address
         self._netmask = ipaddress.IPv4Interface(ifaddr + '/' + netmask).netmask
         self._hosts = []
-        self.findHosts()
 
     def __str__(self):
         return "Network: {}\nHosts: {}".format(self._netaddr, [str(host) for host in self._hosts])

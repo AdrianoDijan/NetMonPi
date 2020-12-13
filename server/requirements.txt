@@ -3,4 +3,5 @@ netifaces
 getmac
 ipaddress
 mac-vendor-lookup
-pysnmp
+easysnmp
+influxdb

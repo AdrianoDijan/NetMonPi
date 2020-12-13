@@ -13,11 +13,13 @@ class Host():
     def __init__(self, ip, mac):
         self._ip = ip
         self._mac = mac
-        self._vendor = MacLookup().lookup(self._mac)
+        self._vendor = "UNKNOWN"
+        try:
+            self._vendor = MacLookup().lookup(self._mac)
+        except:
+            pass
         logging.info("New host created [IP: {}, MAC: {}, Vendor: {}]".format(self._ip, self._mac, self._vendor))
         self._services = []
-        self.getOpenPorts()
-        self.getOSInfo()
 
     def __str__(self):
         return "IP: {0} MAC: {1} OS: {2} Services: {3}".format(self._ip, "", "", [str(service) for service in self._services])
@@ -41,11 +43,13 @@ class Host():
                 try:
                     product = port["service"]["product"]
                     version = port["service"]["version"]
+                    cpe = port["cpe"][0]["cpe"]
                 except:
                     product = "UNKNOWN"
                     version = "UNKNOWN"
+                    cpe = "UNKNOWN"
                 logging.info("New service found [Port: {}, Protocol: {}]".format(portid, protocol))
-                self._services.append(Service(product, version, portid, protocol))
+                self._services.append(Service(product, version, portid, protocol, cpe))
         except:
             logging.error("Error scanning open ports, host: {}".format(str(self._ip)))
 
@@ -57,11 +61,12 @@ class Host():
 
 
 class Service():
-    def __init__(self, product, version, port, protocol):
+    def __init__(self, product, version, port, protocol, cpe):
         self._product = product
         self._version = version
         self._port = port
         self._protocol = protocol
+        self._cpe = cpe
 
     def __str__(self):
         return "Product: {}, Version: {}, Port: {}, Protocol: {}".format(self._product, self._version, self._port, self._protocol)
@@ -71,5 +76,6 @@ class Service():
             "product": self._product,
             "version": self._version,
             "port": self._port,
-            "protocol": self._protocol
+            "protocol": self._protocol,
+            "cpe": self._cpe,
         }
