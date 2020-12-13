@@ -2,7 +2,7 @@ import react from 'react'
 import { Navbar, Nav, NavbarBrand, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCoffee } from '@fortawesome/free-solid-svg-icons'
-import logo from "../slike/net_logo.png"
+import logo from "../slike/net_head.png"
 
 
 function AlatnaTraka() {

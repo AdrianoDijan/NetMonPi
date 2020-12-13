@@ -94,7 +94,7 @@ class Graf extends Component {
                     line: {
                     },
                     point: {
-                        radius: 0
+                        radius: 1
                     }
                 },
                 maintainAspectRatio: false,

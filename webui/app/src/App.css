@@ -32,6 +32,22 @@
   padding: 50px;
 }
 
+.flexbox-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.flexbox-item2 {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+@media screen and (max-width: 800px) {
+  .flexbox-item3 {
+    width: 100%; /* The width is 100%, when the viewport is 800px or smaller */
+  }}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
