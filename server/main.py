@@ -29,5 +29,26 @@ def main():
     with open("f1.json", "w") as jsonfile:
         json.dump(i1.as_dict(), jsonfile)
 
+def pushToDb(if_dict):
+    name = if_dict["name"]
+    #SPREMI IME INTERFACEA
+    network = if_dict["network"]
+    netaddr = if_dict["network"]["netaddr"]
+    netmask = if_dict["network"]["netmask"]
+    for host in network["hosts"]:
+        ip_addr = host["ip"]
+        mac = host["mac"]
+        vendor = host["vendor"]
+        #SPREMI HOST
+        for service in host["services"]:
+            product = service["product"]
+            version = service["version"]
+            port = service["port"]
+            protocol = service["protocol"]
+            cpe = service["cpe"]
+            #SPREMI SERVIS
+
+### Mores queryje samo ka stringove napisati pa cu ih ja ubaciti kad instaliran taj mysql driver
+
 if __name__ == '__main__':
     main()
