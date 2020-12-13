@@ -3,6 +3,8 @@ import json
 from vulnscanner.description import VulnDescription
 from vulnscanner.referenceData import ReferenceData
 
+#testirati basescorev2
+
 class GetCveNumbers():
     def __init__(self, product = None, version = None, port = None, protocol = None, cpe = None):
         self.product = product
@@ -43,13 +45,15 @@ class GetCveNumbers():
                 elif "baseMetricV2" and not "baseMetricV3" in impact:
                     baseMetricV2 = impact.get("baseMetricV2")
                     cvssV2 = baseMetricV2.get("cvssV2")
-                    baseScore = cvssV2.get("baseScore")
-                    cveNumber = self.getCveNumber(cveItem)
-                    vulnDescription = VulnDescription(cveNumber).vulndescription
-                    baseScoreDict["cveNumber"] = cveNumber
-                    baseScoreDict["baseScore"] = baseScore
-                    baseScoreDict["vulnDescription"] = vulnDescription
-                    self.baseScoreList.append(baseScoreDict)
+                    baseScore = cvssV3.get("baseScore")
+                    if self.checkBaseScore(baseScore):
+                        baseScore = cvssV2.get("baseScore")
+                        cveNumber = self.getCveNumber(cveItem)
+                        vulnDescription = VulnDescription(cveNumber).vulndescription
+                        baseScoreDict["cveNumber"] = cveNumber
+                        baseScoreDict["baseScore"] = baseScore
+                        baseScoreDict["vulnDescription"] = vulnDescription
+                        self.baseScoreList.append(baseScoreDict)
         self.baseScoreList = sorted(self.baseScoreList, key=lambda k: k['baseScore'], reverse=True)
         self.baseScoreList = self.baseScoreList[:3]
 
