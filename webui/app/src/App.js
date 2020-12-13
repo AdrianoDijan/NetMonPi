@@ -9,6 +9,8 @@ import Kartica from './components/Card1'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import Kartica2 from './components/Card2'
+import Kartica1 from './components/Card1'
 
 class App extends React.Component {
   constructor() {
@@ -18,7 +20,7 @@ class App extends React.Component {
 
   render() {
   return (
-    <div>
+    <div className="flexbox-container">
       {/* <AlatnaTraka/>
     <Container>
       
@@ -37,9 +39,16 @@ class App extends React.Component {
     </Container> */}
 
   <AlatnaTraka/>
-  <Kartica/>
+  <div className="flexbox-item flexbox-item2">
+  <Kartica1/>
+  <Kartica2/>
+  </div>
+  <div className="flexbox-item flexbox-item3">
   <Graf/>
+  </div>
+  <div className="flexbox-item flexbox-item3">
   <Tablica/>
+  </div>
     </div>
   )};
 }
