@@ -2,6 +2,7 @@ const Influx = require('influx');
 const express = require('express');
 const path = require('path');
 const os = require('os');
+const cors = require('cors')
 const bodyParser = require('body-parser');
 const app = express();
 const influx = new Influx.InfluxDB('http://10.10.0.9:8086/netmonpi');
@@ -11,6 +12,7 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(cors());
 app.set('port', 3080);
 
 influx.getMeasurements()

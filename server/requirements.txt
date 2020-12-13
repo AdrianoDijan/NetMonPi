@@ -1,0 +1,7 @@
+python3-nmap
+netifaces
+getmac
+ipaddress
+mac-vendor-lookup
+easysnmp
+influxdb
