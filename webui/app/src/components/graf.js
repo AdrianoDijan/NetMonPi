@@ -22,7 +22,7 @@ class Graf extends Component {
         let myelements = []
         let mylabels = []
 
-        fetch("http://localhost:3080/api/v1/usage")
+        fetch("http://10.10.0.9:3080/api/v1/usage")
             .then(response => response.json())
             .then(podaci => {
                 for (let i = 0; i < podaci.length; i++) {
