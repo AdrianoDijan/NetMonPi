@@ -42,15 +42,16 @@ class Network():
     def getNetmask(self):
         return self._netmask
 
-    def createHost(self, ip_addr, mac_addr):
+    def createHost(self, ip_addr, mac_addr, hostname):
         self._hosts.append(
             Host(
                 ipaddress.IPv4Address(ip_addr),
                 mac_addr,
+                hostname,
             )
         )
         
-    def findHosts(self):
+    def findHosts(self, threadPool):
         nmap = nmap3.NmapScanTechniques()
         logging.info("Network findHosts")
         if str(self._netaddr) not in ("UNKNOWN", "127.0.0.1"):
@@ -58,22 +59,25 @@ class Network():
                 str(self._netaddr) + '/' + str(self._netmask)))))
             results = nmap.nmap_ping_scan(
                 str(self._netaddr) + '/' + str(self._net.prefixlen))
-            threads = []
             for host in results:
                 if host['reason'] != 'localhost-reponse':
                     ip = "0.0.0.0"
                     mac = "00:00:00:00:00:00"
-                    for addr in host['addresses']: #[0]['addr'])
+                    try:
+                        hostname = host['hostname'][0]['name']
+                    except IndexError:
+                        hostname = "UNKNOWN"
+                    for addr in host['addresses']:
                         if addr['addrtype'] == 'ipv4':
                             ip = addr['addr']
                         elif addr['addrtype'] == 'mac':
                             mac = addr['addr']
-                    thread = threading.Thread(target=self.createHost, args=(ip, mac))
-                    threads.append(thread)
+                    thread = threading.Thread(target=self.createHost, args=(ip, mac, hostname))
+                    threadPool.append(thread)
                     thread.start()
-            for thread in threads:
-                thread.join()
             
+    def getHosts(self):
+        return self._hosts
 
 class Interface():
     def __init__(self, name):
@@ -114,3 +118,6 @@ class Interface():
             if "lo" not in interfaces:
                 interfaces.append("lo")
         return interfaces
+
+    def getNetwork(self):
+        return self._network

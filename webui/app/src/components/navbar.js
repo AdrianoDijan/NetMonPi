@@ -1,31 +1,33 @@
 import react from 'react'
-import { Navbar,Nav, NavbarBrand, Button } from 'react-bootstrap';
+import { Navbar, Nav, NavbarBrand, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCoffee } from '@fortawesome/free-solid-svg-icons'
+import logo from "../slike/net_head.png"
 
 
 function AlatnaTraka() {
-    return (
-        <Navbar bg="dark" variant="dark">
-        <Navbar.Collapse id="responsive-navbar-nav">
+  return (
+    <Navbar bg="primary" variant="dark">
+      <Navbar.Collapse id="responsive-navbar-nav">
         <Navbar.Brand href="#home">
+          <img src={logo} width="50px"></img>
           {' '}
           NetMonPi
         </Navbar.Brand>
-        </Navbar.Collapse>
+      </Navbar.Collapse>
 
-        <Nav>
-        
-        <Button variant="outline-primary">
-        Log in
+      <Nav>
+
+        <Button variant="outline-light">
+          Log in
         </Button>
         {' '}
-        <Button variant="outline-primary">
-            Register
+        <Button variant="outline-light">
+          Register
         </Button>
-        </Nav>
-      </Navbar>
-    )
+      </Nav>
+    </Navbar>
+  )
 }
 
 export default AlatnaTraka;

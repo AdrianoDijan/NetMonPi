@@ -10,14 +10,11 @@ import logging
 
 
 class Host():
-    def __init__(self, ip, mac):
+    def __init__(self, ip, mac, hostname):
         self._ip = ip
         self._mac = mac
-        self._vendor = "UNKNOWN"
-        try:
-            self._vendor = MacLookup().lookup(self._mac)
-        except:
-            pass
+        self._hostname = hostname
+        self._vendor = "UNKNOWN" if mac == "00:00:00:00:00:00" else MacLookup().lookup(self._mac)
         logging.info("New host created [IP: {}, MAC: {}, Vendor: {}]".format(self._ip, self._mac, self._vendor))
         self._services = []
 
@@ -29,6 +26,7 @@ class Host():
             "ip": str(self._ip),
             "mac": str(self._mac),
             "vendor": str(self._vendor),
+            "hostname": str(self._hostname),
             "services": [service.as_dict() for service in self._services]
         }
 
@@ -58,6 +56,9 @@ class Host():
         nmap = nmap3.Nmap()
         results = nmap.nmap_os_detection(str(self._ip))
         logging.info(results)
+
+    def getServices(self):
+        return self._services
 
 
 class Service():

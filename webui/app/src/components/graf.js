@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Chart from "chart.js";
 import classes from "./LineGraph.module.css";
+import { faBold, faRubleSign } from '@fortawesome/free-solid-svg-icons';
 
 Chart.defaults.global.defaultFontFamily = "'PT Sans', sans-serif"
 Chart.defaults.global.legend.display = false;
@@ -22,7 +23,7 @@ class Graf extends Component {
         let myelements = []
         let mylabels = []
 
-        fetch("http://localhost:3080/api/v1/usage")
+        fetch("http://10.10.0.9:3080/api/v1/bandwidth/lastday")
             .then(response => response.json())
             .then(podaci => {
                 for (let i = 0; i < podaci.length; i++) {
@@ -30,8 +31,8 @@ class Graf extends Component {
                     mylabels.push(podaci[i]['time'])
                 }
             }).then(x => {
-                chart.data.datasets[0].data = myelements;
-                chart.data.labels = mylabels;
+                chart.data.datasets[0].data = myelements.map(x => {return x/1000000});
+                chart.data.labels = mylabels.map(v => {return v.slice(11,16)});
                 chart.update()
             })
     }
@@ -64,7 +65,8 @@ class Graf extends Component {
                     {
                         label: "Tx",
                         data: [0,0,0,0,0,0,0,0,0,0,0,0],
-                        borderColor: "rgb(255,0,0)",
+                        borderColor: "rgb(204,0,0)",
+                        backgroundColor: "rgba(240, 10, 10, 0.2)",
                     },
                     // {
                     //     label: "Rx",
@@ -74,9 +76,30 @@ class Graf extends Component {
                 ]
             },
             options: {
+                title: {
+                    display: true,
+                    text: 'WAN Bandwith',
+                    fontStyle: faBold,
+                    fontColor: 'rgb(204, 0, 0)'
+                },
+                scales: {
+                    yAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'MB/s'
+                        }
+                    }]
+                },
+                elements: {
+                    line: {
+                    },
+                    point: {
+                        radius: 1
+                    }
+                },
                 maintainAspectRatio: false,
                 legend: {
-                    display: true,
+                    display: false,
                     position: "right"
                 }
             }
