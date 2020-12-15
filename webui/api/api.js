@@ -24,13 +24,26 @@ influx.getMeasurements()
     })
     .catch(error => console.log({ error }));
 
-app.get('/api/v1/usage', (request, response) => {
+app.get('/api/v1/bandwidth/lastday', (request, response) => {
     influx.query(`
      SELECT non_negative_derivative(mean("txInOctets"),1s)
       AS "mean_txInOctets" FROM "ifBandwidth"
        WHERE time > now()-24h AND "host"=${Influx.escape.stringLit('10.10.0.1')}
         AND "interface"='pppoe0'
         group by time(15m)
+    `)
+        .then(result => response.status(200).json(result))
+        .catch(error => response.status(500).json({ error }));
+});
+
+app.get('/api/v1/traffic/all', (request, response) => {
+    influx.query(`
+     SELECT mean("txInOctets")
+      AS "mean_txInOctets", mean("txOutOctets") as "mean_txOutOctets" 
+      FROM "ifBandwidth"
+       WHERE time > now()-48h AND "host"=${Influx.escape.stringLit('10.10.0.1')}
+        AND "interface"='pppoe0'
+        group by time(1s)
     `)
         .then(result => response.status(200).json(result))
         .catch(error => response.status(500).json({ error }));

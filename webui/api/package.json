@@ -7,7 +7,7 @@
         "build": "webpack",
         "dev": "nodemon ./api.js localhost 3080"
     },
-    "author": "Videcemojos",
+    "author": "NetMonPi",
     "dependencies": {
         "body-parser": "^1.19.0",
         "cors": "^2.8.5",
