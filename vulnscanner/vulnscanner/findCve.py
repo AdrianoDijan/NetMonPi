@@ -3,30 +3,32 @@ import json
 from vulnscanner.description import VulnDescription
 from vulnscanner.referenceData import ReferenceData
 
-#testirati basescorev2
-
 class GetCveNumbers():
-    def __init__(self, product = None, version = None, port = None, protocol = None, cpe = None):
-        self.product = product
-        self.version = version
-        self.port = port
-        self.protocol = protocol
-        self.cpe = cpe
+    # def __init__(self, product = None, version = None, port = None, protocol = None, cpe = None):
+    def __init__(self, apiResponseJson = None):
+        # self.product = product
+        # self.version = version
+        # self.port = port
+        # self.protocol = protocol
+        # self.cpe = cpe
+        
+        self.apiResponseJson = apiResponseJson
+
         self.baseScoreList = []
         self.getBaseScore()
 
     def getBaseScore(self):
-        if self.product or self.version:
-            if self.product:
-                requestUrl = "https://services.nvd.nist.gov/rest/json/cves/1.0?keyword=" + self.product
-            elif self.version:
-                requestUrl = requestUrl + " " + self.version
-        elif self.cpe:
-            requestUrl = "https://services.nvd.nist.gov/rest/json/cves/1.0?cpeMatchString=" + self.cpe
+        # if self.product or self.version:
+        #     if self.product:
+        #         requestUrl = "https://services.nvd.nist.gov/rest/json/cves/1.0?keyword=" + self.product
+        #     elif self.version:
+        #         requestUrl = requestUrl + " " + self.version
+        # elif self.cpe:
+        #     requestUrl = "https://services.nvd.nist.gov/rest/json/cves/1.0?cpeMatchString=" + self.cpe
             
-        apiResponse = rq.get(requestUrl)
-
-        for cveItem in apiResponse.json().get("result").get("CVE_Items"):
+        # apiResponse = rq.get(requestUrl)
+        
+        for cveItem in self.apiResponseJson.get("result").get("CVE_Items"):
             baseScoreDict = {}
             if "impact" in cveItem:
                 impact = cveItem.get("impact")

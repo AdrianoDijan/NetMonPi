@@ -5,8 +5,6 @@ import json
 class VulnDescription():
     def __init__(self, cveNumber=None):
         self.cveNumber = cveNumber
-        # self.descriptionList = []
-        # self.descriptionDict = {}
         self.vulndescription = ""
         self.findVulnDescription(self.cveNumber)
 
@@ -16,5 +14,3 @@ class VulnDescription():
             vulnDescription = cveItems.get("cve").get("description").get("description_data")
             for descriptionData in vulnDescription:
                 self.vulndescription = descriptionData.get("value")
-                # self.descriptionDict["description"] = description
-                # self.descriptionList.append(self.descriptionDict)

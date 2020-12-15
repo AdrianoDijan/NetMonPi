@@ -1,7 +1,722 @@
 {
-    "deviceName": "MicroTik",
-    "osName": "RouterOS",
-    "osVersion": "v7",
-    "protocol": "None",
-    "protocolVersion": "None"
+    "name": "enp4s4",
+    "network": {
+        "network": "10.10.0.0/23",
+        "netaddr": "10.10.0.0",
+        "netmask": "255.255.254.0",
+        "hosts": [
+            {
+                "ip": "10.10.1.21",
+                "mac": "F0:9F:C2:66:BE:65",
+                "vendor": "Ubiquiti Networks Inc.",
+                "services": []
+            },
+            {
+                "ip": "10.10.0.5",
+                "mac": "B8:27:EB:CC:1D:59",
+                "vendor": "Raspberry Pi Foundation",
+                "services": [
+                    {
+                        "product": "OpenSSH",
+                        "version": "7.9p1 Raspbian 10+deb10u2",
+                        "port": "22",
+                        "protocol": "tcp",
+                        "cpe": "cpe:/o:linux:linux_kernel"
+                    },
+                    {
+                        "product": "lighttpd",
+                        "version": "1.4.53",
+                        "port": "80",
+                        "protocol": "tcp",
+                        "cpe": "cpe:/a:lighttpd:lighttpd:1.4.53"
+                    }
+                ]
+            },
+            {
+                "ip": "10.10.0.6",
+                "mac": "A8:A1:59:19:06:2A",
+                "vendor": "ASRock Incorporation",
+                "services": [
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "135",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    },
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "139",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    },
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "445",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    },
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "2179",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    },
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "3389",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    },
+                    {
+                        "product": "Microsoft HTTPAPI httpd",
+                        "version": "2.0",
+                        "port": "5357",
+                        "protocol": "tcp",
+                        "cpe": "cpe:/o:microsoft:windows"
+                    }
+                ]
+            },
+            {
+                "ip": "10.10.0.8",
+                "mac": "F8:46:1C:31:6E:B7",
+                "vendor": "Sony Interactive Entertainment Inc.",
+                "services": []
+            },
+            {
+                "ip": "10.10.0.12",
+                "mac": "F4:F2:6D:8F:C2:AC",
+                "vendor": "TP-LINK TECHNOLOGIES CO.,LTD.",
+                "services": [
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "22",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    },
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "80",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    }
+                ]
+            },
+            {
+                "ip": "10.10.0.7",
+                "mac": "74:38:B7:17:34:0D",
+                "vendor": "CANON INC.",
+                "services": [
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "80",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    },
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "443",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    },
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "515",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    },
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "631",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    },
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "9100",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    }
+                ]
+            },
+            {
+                "ip": "10.10.0.11",
+                "mac": "70:AF:24:13:D7:25",
+                "vendor": "TP Vision Belgium NV",
+                "services": [
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "5555",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    },
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "8008",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    },
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "8009",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    },
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "8443",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    },
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "9000",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    },
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "9080",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    },
+                    {
+                        "product": "Philips Intel UPnP SDK",
+                        "version": "1.4",
+                        "port": "49153",
+                        "protocol": "tcp",
+                        "cpe": "cpe:/o:linux:linux_kernel:2.6"
+                    }
+                ]
+            },
+            {
+                "ip": "10.10.0.1",
+                "mac": "F0:9F:C2:66:BE:65",
+                "vendor": "Ubiquiti Networks Inc.",
+                "services": [
+                    {
+                        "product": "OpenSSH",
+                        "version": "7.4p1 Debian 10+deb9u7",
+                        "port": "22",
+                        "protocol": "tcp",
+                        "cpe": "cpe:/o:linux:linux_kernel"
+                    },
+                    {
+                        "product": "dnsmasq",
+                        "version": "2.79-1-2-geff17ee",
+                        "port": "53",
+                        "protocol": "tcp",
+                        "cpe": "cpe:/a:thekelleys:dnsmasq:2.79-1-2-geff17ee"
+                    },
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "80",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    },
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "443",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    },
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "10001",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    }
+                ]
+            },
+            {
+                "ip": "10.10.0.2",
+                "mac": "74:4D:28:62:12:F0",
+                "vendor": "Routerboard.com",
+                "services": [
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "21",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    },
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "22",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    },
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "23",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    },
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "443",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    },
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "2000",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    },
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "8291",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    }
+                ]
+            },
+            {
+                "ip": "10.10.0.3",
+                "mac": "CC:2D:E0:EA:2A:B4",
+                "vendor": "Routerboard.com",
+                "services": [
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "21",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    },
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "22",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    },
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "23",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    },
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "443",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    },
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "2000",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    },
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "8291",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    }
+                ]
+            },
+            {
+                "ip": "10.10.0.4",
+                "mac": "64:D1:54:BE:BA:61",
+                "vendor": "Routerboard.com",
+                "services": [
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "21",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    },
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "22",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    },
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "23",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    },
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "53",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    },
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "80",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    },
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "443",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    },
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "2000",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    },
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "8291",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    }
+                ]
+            },
+            {
+                "ip": "10.10.0.9",
+                "mac": "00:00:00:00:00:00",
+                "vendor": "XEROX CORPORATION",
+                "services": [
+                    {
+                        "product": "OpenSSH",
+                        "version": "7.9p1 Debian 10+deb10u2",
+                        "port": "22",
+                        "protocol": "tcp",
+                        "cpe": "cpe:/o:linux:linux_kernel"
+                    },
+                    {
+                        "product": "dnsmasq",
+                        "version": "pi-hole-2.81",
+                        "port": "53",
+                        "protocol": "tcp",
+                        "cpe": "cpe:/a:thekelleys:dnsmasq:pi-hole-2.81"
+                    },
+                    {
+                        "product": "lighttpd",
+                        "version": "1.4.45",
+                        "port": "80",
+                        "protocol": "tcp",
+                        "cpe": "cpe:/a:lighttpd:lighttpd:1.4.45"
+                    },
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "81",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    },
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "111",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    },
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "443",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    },
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "3000",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    },
+                    {
+                        "product": "MySQL",
+                        "version": "5.5.5-10.3.27-MariaDB-0+deb10u1",
+                        "port": "3306",
+                        "protocol": "tcp",
+                        "cpe": "cpe:/a:mysql:mysql:5.5.5-10.3.27-mariadb-0%2Bdeb10u1"
+                    },
+                    {
+                        "product": "InfluxDB http admin",
+                        "version": "1.8.2",
+                        "port": "8086",
+                        "protocol": "tcp",
+                        "cpe": "cpe:/a:influxdata:influxdb:1.8.2"
+                    },
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "8888",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    },
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "9001",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    },
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "9080",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    },
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "9090",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    },
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "10000",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    }
+                ]
+            },
+            {
+                "ip": "10.10.0.14",
+                "mac": "00:00:A7:3D:00:00",
+                "vendor": "NETWORK COMPUTING DEVICES INC.",
+                "services": [
+                    {
+                        "product": "OpenSSH",
+                        "version": "7.9p1 Debian 10+deb10u2",
+                        "port": "22",
+                        "protocol": "tcp",
+                        "cpe": "cpe:/o:linux:linux_kernel"
+                    },
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "80",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    },
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "111",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    },
+                    {
+                        "product": "Samba smbd",
+                        "version": "3.X - 4.X",
+                        "port": "139",
+                        "protocol": "tcp",
+                        "cpe": "cpe:/a:samba:samba"
+                    },
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "443",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    },
+                    {
+                        "product": "Samba smbd",
+                        "version": "3.X - 4.X",
+                        "port": "445",
+                        "protocol": "tcp",
+                        "cpe": "cpe:/a:samba:samba"
+                    },
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "2049",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    },
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "3000",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    },
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "3260",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    },
+                    {
+                        "product": "BaseHTTPServer",
+                        "version": "0.6",
+                        "port": "5357",
+                        "protocol": "tcp",
+                        "cpe": "cpe:/a:python:python:3.7.3"
+                    },
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "8000",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    },
+                    {
+                        "product": "CherryPy httpd",
+                        "version": "unknown",
+                        "port": "8080",
+                        "protocol": "tcp",
+                        "cpe": "cpe:/a:cherrypy:cherrypy:unknown"
+                    },
+                    {
+                        "product": "CherryPy httpd",
+                        "version": "unknown",
+                        "port": "8181",
+                        "protocol": "tcp",
+                        "cpe": "cpe:/a:cherrypy:cherrypy:unknown"
+                    },
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "9000",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    },
+                    {
+                        "product": "nginx",
+                        "version": "1.16.1",
+                        "port": "9080",
+                        "protocol": "tcp",
+                        "cpe": "cpe:/a:igor_sysoev:nginx:1.16.1"
+                    },
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "9090",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    }
+                ]
+            },
+            {
+                "ip": "10.10.1.83",
+                "mac": "00:00:00:00:00:00",
+                "vendor": "XEROX CORPORATION",
+                "services": [
+                    {
+                        "product": "OpenSSH",
+                        "version": "7.9p1 Debian 10+deb10u2",
+                        "port": "22",
+                        "protocol": "tcp",
+                        "cpe": "cpe:/o:linux:linux_kernel"
+                    },
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "81",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    },
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "111",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    },
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "3000",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    },
+                    {
+                        "product": "MySQL",
+                        "version": "5.5.5-10.3.27-MariaDB-0+deb10u1",
+                        "port": "3306",
+                        "protocol": "tcp",
+                        "cpe": "cpe:/a:mysql:mysql:5.5.5-10.3.27-mariadb-0%2Bdeb10u1"
+                    },
+                    {
+                        "product": "InfluxDB http admin",
+                        "version": "1.8.2",
+                        "port": "8086",
+                        "protocol": "tcp",
+                        "cpe": "cpe:/a:influxdata:influxdb:1.8.2"
+                    },
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "8888",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    },
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "9001",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    },
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "9080",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    },
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "9090",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    },
+                    {
+                        "product": "UNKNOWN",
+                        "version": "UNKNOWN",
+                        "port": "10000",
+                        "protocol": "tcp",
+                        "cpe": "UNKNOWN"
+                    }
+                ]
+            }
+        ]
+    }
 }
