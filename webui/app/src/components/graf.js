@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Chart from "chart.js";
+import moment from "moment"
 import classes from "./LineGraph.module.css";
 import { faBold, faRubleSign } from '@fortawesome/free-solid-svg-icons';
 
@@ -20,19 +21,22 @@ class Graf extends Component {
 
     setData(chart) {
 
-        let myelements = []
+        let txOctets = []
+        let rxOctets = []
         let mylabels = []
 
-        fetch("http://10.10.0.9:3080/api/v1/bandwidth/lastday")
+        fetch("http://localhost:3080/api/v1/bandwidth/lastday")
             .then(response => response.json())
             .then(podaci => {
                 for (let i = 0; i < podaci.length; i++) {
-                    myelements.push(podaci[i]['mean_txInOctets'])
+                    txOctets.push(podaci[i]['txInOctets'])
+                    rxOctets.push(podaci[i]['txOutOctets'])
                     mylabels.push(podaci[i]['time'])
                 }
             }).then(x => {
-                chart.data.datasets[0].data = myelements.map(x => {return x/1000000});
-                chart.data.labels = mylabels.map(v => {return v.slice(11,16)});
+                chart.data.datasets[0].data = txOctets.map(x => {return (x/1000000).toFixed(2)});
+                chart.data.datasets[1].data = rxOctets.map(x => {return -1*(x/1000000).toFixed(2)})
+                chart.data.labels = mylabels.map(x => {return moment(x)});
                 chart.update()
             })
     }
@@ -50,8 +54,7 @@ class Graf extends Component {
 
         const { height: graphHeight } = myChartRef.canvas;
 
-        let gradientLine1 = myChartRef
-            .createLinearGradient(0, 0, 0, graphHeight);
+        let gradientLine1 = myChartRef.createLinearGradient(0, 0, 0, graphHeight);
         gradientLine1.addColorStop(0, "red");
         gradientLine1.addColorStop(0.5, "rgb(255, 0, 110, 0.35)");
         gradientLine1.addColorStop(1, "rgb(255, 0, 110, 0.7)");
@@ -60,19 +63,20 @@ class Graf extends Component {
             type: "line",
             data: {
                 //Bring in data
-                labels: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"],
+                labels: [],
                 datasets: [
                     {
                         label: "Tx",
-                        data: [0,0,0,0,0,0,0,0,0,0,0,0],
+                        data: [],
                         borderColor: "rgb(204,0,0)",
                         backgroundColor: "rgba(240, 10, 10, 0.2)",
                     },
-                    // {
-                    //     label: "Rx",
-                    //     data: [76, 87, 54, 93, 63, 58, 47, 75, 56, 87, 96, 45],
-                    //     borderColor: "rgb(0, 0, 255)"
-                    // }
+                    {
+                        label: "Rx",
+                        data: [],
+                        borderColor: "rgb(0, 0, 255)",
+                        backgroundColor: "rgba(10, 10, 240, 0.2)",
+                    }
                 ]
             },
             options: {
@@ -88,13 +92,34 @@ class Graf extends Component {
                             display: true,
                             labelString: 'MB/s'
                         }
-                    }]
+                    }],
+                    xAxes: [{
+                        type: 'time',
+                        time: {
+                            displayFormats: {
+                                minute: 'HH:MM'
+                            },
+                            unit: 'minute'
+                        },
+                        ticks: {
+                            autoSkip: true,
+                            source: 'labels',
+                        }
+                    }],
                 },
                 elements: {
                     line: {
                     },
                     point: {
                         radius: 1
+                    }
+                },
+                tooltips: {
+                    mode: 'index',
+                    position: 'average',
+                    intersect: false,
+                    callbacks: {
+                        label: (item) => {return item.yLabel + ' MB/s'}
                     }
                 },
                 maintainAspectRatio: false,
