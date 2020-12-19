@@ -6,11 +6,12 @@ import AlatnaTraka from './components/navbar'
 import Graf from './components/graf'
 import Tablica from './components/tablica'
 import Kartica from './components/Card1'
-import Container from 'react-bootstrap/Container'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
 import Kartica2 from './components/Card2'
 import Kartica1 from './components/Card1'
+import Grid from '@material-ui/core/Grid'
+import Paper from '@material-ui/core/Paper'
+import { makeStyles } from '@material-ui/core/styles'
+import Divider from '@material-ui/core/Divider'
 
 class App extends React.Component {
   constructor() {
@@ -20,36 +21,59 @@ class App extends React.Component {
 
   render() {
   return (
-    <div className="flexbox-container">
-      {/* <AlatnaTraka/>
-    <Container>
-      
-    <Row>
-    <Col><Kartica/></Col>
-    </Row>
+  //   <div className="flexbox-container">
 
-    <Row>
-    <Col sm><Graf/></Col>
-    </Row>
-    
+  // <AlatnaTraka/>
+  // <div className="flexbox-item flexbox-item2">
+  // <Kartica1/>
+  // <Kartica2/>
+  // </div>
+  // <div className="flexbox-item flexbox-item3">
+  // <Graf/>
+  // </div>
+  // <div className="flexbox-item flexbox-item3">
+  // <Tablica/>
+  // </div>
+  //   </div>
 
-    <Row>
-    <Tablica/>
-    </Row>
-    </Container> */}
+    <div>
+      <Grid container spacing={3} direction="column">
 
-  <AlatnaTraka/>
-  <div className="flexbox-item flexbox-item2">
-  <Kartica1/>
-  <Kartica2/>
-  </div>
-  <div className="flexbox-item flexbox-item3">
-  <Graf/>
-  </div>
-  <div className="flexbox-item flexbox-item3">
-  <Tablica/>
-  </div>
+        <Grid item container>
+        <Grid item xs={12}>
+          <Paper><AlatnaTraka/></Paper>
+        </Grid>
+        </Grid>
+        <Grid item container>
+        <Grid item xs={1}></Grid>
+        <Grid item xs={4}>
+          <Paper><Kartica1/></Paper>
+        </Grid>
+        <Grid item xs={2}></Grid>
+        <Grid item xs={4}>
+          <Paper><Kartica2/></Paper>
+        </Grid>
+        <Grid item xs={1}></Grid>
+        </Grid>
+        
+        <Grid item container>
+          <Grid item xs={1}></Grid>
+          <Grid item xs={10}>
+          <Paper variant="outlined"><Graf/></Paper>
+          </Grid>
+          <Grid item xs={1}></Grid>
+        </Grid>
+
+        <Grid item container>
+        <Grid item xs={1}></Grid>
+        <Grid item xs={10}>
+          <Paper><Tablica/></Paper>
+        </Grid>
+        <Grid item xs={1}></Grid>
+      </Grid>
+      </Grid>
     </div>
+
   )};
 }
 

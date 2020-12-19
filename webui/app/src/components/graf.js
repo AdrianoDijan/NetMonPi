@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Chart from "chart.js";
 import moment from "moment"
 import classes from "./LineGraph.module.css";
-import { faBold, faRubleSign } from '@fortawesome/free-solid-svg-icons';
+import Card from '@material-ui/core/Card'
 
 Chart.defaults.global.defaultFontFamily = "'PT Sans', sans-serif"
 Chart.defaults.global.legend.display = false;
@@ -83,7 +83,6 @@ class Graf extends Component {
                 title: {
                     display: true,
                     text: 'WAN Bandwith',
-                    fontStyle: faBold,
                     fontColor: 'rgb(204, 0, 0)'
                 },
                 scales: {
@@ -134,12 +133,14 @@ class Graf extends Component {
     }
     render() {
         return (
+            <Card>
             <div className={classes.graphContainer}>
                 <canvas
                     id="myChart"
                     ref={this.chartRef}
                 />
             </div>
+            </Card>
         )
     }
 }

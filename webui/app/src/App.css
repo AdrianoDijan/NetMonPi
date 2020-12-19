@@ -43,6 +43,27 @@
   flex-wrap: wrap;
 }
 
+.MuiCard-root {
+  padding: 5px;
+  justify-content: center;
+}
+
+.MuiCard-root:hover {
+  transform: scale(1.1);
+}
+
+.MuiCardHeader-root {
+  background-color: gray;
+}
+
+.MuiCardHeader-content {
+  text-align: center;
+}
+
+.MuiCardContent-root {
+  text-align: center;
+}
+
 @media screen and (max-width: 800px) {
   .flexbox-item3 {
     width: 100%; /* The width is 100%, when the viewport is 800px or smaller */

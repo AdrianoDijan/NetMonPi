@@ -1,12 +1,12 @@
 .graphContainer {
-    width: 100vw;
-    height: 70vh;
+    width: 80vw;
+    height: 50vh;
     background:white;
     padding: 30px 120px 10px 120px;
     border-radius: 10px;
-    -webkit-box-shadow: 0px 10px 0px -5px rgb(60, 179, 113);
-    -moz-box-shadow: 0px 10px 0px -5px rgb(60, 179, 113);
-    box-shadow: 0px 10px 0px -5px rgb(60, 179, 113);
+    /* -webkit-box-shadow: 0px 10px 0px -5px rgb(255, 255, 255);
+    -moz-box-shadow: 0px 10px 0px -5px rgb(255, 255, 255);
+    box-shadow: 0px 10px 0px -5px rgb(255, 255, 255); */
 }
 
 @media only screen and (max-width: 600px) {
@@ -14,3 +14,6 @@
         width: 120vw;
     }
 }
+
+/* 90def
+60def */

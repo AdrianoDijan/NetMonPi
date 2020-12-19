@@ -1,5 +1,7 @@
 import React from 'react'
 import Table from 'react-bootstrap/Table'
+import Card from '@material-ui/core/Card'
+import CardContent from '@material-ui/core/CardContent'
 
 class Tablica extends React.Component {
     constructor() {
@@ -10,6 +12,7 @@ class Tablica extends React.Component {
     render() {
 
         return(
+          <Card>
             <Table variant="dark" className="table">
             <thead>
               <tr>
@@ -40,6 +43,7 @@ class Tablica extends React.Component {
               </tr>
             </tbody>
           </Table>
+          </Card>
         )
     }
 }
