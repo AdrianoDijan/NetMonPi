@@ -1,10 +1,8 @@
 import React from 'react'
-import Card from 'react-bootstrap/Card'
-import logo from './logo.svg';
 import './App.css';
 import AlatnaTraka from './components/navbar'
 import Graf from './components/graf'
-import Tablica from './components/tablica'
+import BasicTable from './components/tablica'
 import Kartica from './components/Card1'
 import Kartica2 from './components/Card2'
 import Kartica1 from './components/Card1'
@@ -21,20 +19,6 @@ class App extends React.Component {
 
   render() {
   return (
-  //   <div className="flexbox-container">
-
-  // <AlatnaTraka/>
-  // <div className="flexbox-item flexbox-item2">
-  // <Kartica1/>
-  // <Kartica2/>
-  // </div>
-  // <div className="flexbox-item flexbox-item3">
-  // <Graf/>
-  // </div>
-  // <div className="flexbox-item flexbox-item3">
-  // <Tablica/>
-  // </div>
-  //   </div>
 
     <div>
       <Grid container spacing={3} direction="column">
@@ -67,7 +51,7 @@ class App extends React.Component {
         <Grid item container>
         <Grid item xs={1}></Grid>
         <Grid item xs={10}>
-          <Paper><Tablica/></Paper>
+          <Paper><BasicTable/></Paper>
         </Grid>
         <Grid item xs={1}></Grid>
       </Grid>

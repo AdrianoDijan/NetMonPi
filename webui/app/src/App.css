@@ -48,10 +48,6 @@
   justify-content: center;
 }
 
-.MuiCard-root:hover {
-  transform: scale(1.1);
-}
-
 .MuiCardHeader-root {
   background-color: gray;
 }

@@ -1,51 +1,44 @@
 import React from 'react'
-import Table from 'react-bootstrap/Table'
-import Card from '@material-ui/core/Card'
-import CardContent from '@material-ui/core/CardContent'
+import { DataGrid } from '@material-ui/data-grid';
 
-class Tablica extends React.Component {
-    constructor() {
-        super()
-        this.state = {}
-    }
+let data = []
 
-    render() {
+fetch("http://localhost:3080/api/v1/devices/all")
+      .then(response => response.json())
+      .then(podaci => {
+          for (let i = 0;i < podaci.length; i++) {
+            data.push(podaci[i])
+          }
+      })
+      
 
-        return(
-          <Card>
-            <Table variant="dark" className="table">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Uređaj</th>
-                <th>Operacijski sustav</th>
-                <th>Sigurnost</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>1</td>
-                <td>Samsung</td>
-                <td>Android</td>
-                <td>Sigurno</td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td>Huawei</td>
-                <td>Android</td>
-                <td>Sigurno</td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td>iPhone</td>
-                <td>iOS</td>
-                <td>Sigurno</td>
-              </tr>
-            </tbody>
-          </Table>
-          </Card>
-        )
-    }
+  
+
+   const columns = [
+   {field:'id', headerName:'ID'},
+   {field:'mac', headerName:'MAC', width: 120},
+   {field:'netaddr', headerName:'Address'},
+   {field:'ip', headerName:'IP'},
+   {field:'hostname', headerName:'Hostname'},
+   {field:'first_seen', headerName:'First_seen'},
+   {field:'last_seen', headerName:'Last_seen'},
+   {field:'vendor', headerName:'Vendor'}
+ ]
+
+ let rows = data;
+
+ export default function BasicTable() {
+
+
+     for (let i = 0; i < rows.length; i++) {
+       rows[i]['id'] = i;
+     }
+
+     
+  return (
+    <div style={{ height: 400, width: '100%' }}>
+      <DataGrid rows={rows} columns={columns} pageSize={5} checkboxSelection />
+    </div>
+  );
 }
 
-export default Tablica;
