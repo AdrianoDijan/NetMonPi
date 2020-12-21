@@ -1,11 +1,20 @@
 const Influx = require('influx');
 const express = require('express');
 const path = require('path');
-const os = require('os');
 const cors = require('cors')
 const bodyParser = require('body-parser');
+const pg = require('pg')
+const Pool = pg.Pool
 const app = express();
 const influx = new Influx.InfluxDB('http://10.10.0.9:8086/netmonpi');
+
+const pool = new Pool({
+    user: 'postgres',
+    host: '10.10.0.9',
+    database: 'netmonpi',
+    password: 'MyikObi14hOS',
+    port: 5433
+})
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -50,3 +59,23 @@ app.get('/api/v1/traffic/all', (request, response) => {
         .then(result => response.status(200).json(result))
         .catch(error => response.status(500).json({ error }));
 });
+
+app.get('/api/v1/devices/all', (request, response) => {
+    pool.query('SELECT * FROM host ORDER by last_seen DESC', (error, results) => {
+        if (error) {
+            throw error
+        }
+        response.status(200).json(results.rows)
+    })
+});
+
+app.get('/api/v1/services/:mac', (request, response) => {
+    mac = request.params.mac
+
+    pool.query('SELECT * FROM service WHERE service_id IN (SELECT service_id from hostservice where mac = $1)', [mac], (error, results) => {
+        if (error) {
+            throw error
+        }
+        response.status(200).json(results.rows)
+    })
+})

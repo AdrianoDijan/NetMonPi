@@ -14,7 +14,10 @@ class Host():
         self._ip = ip
         self._mac = mac
         self._hostname = hostname
-        self._vendor = "UNKNOWN" if mac == "00:00:00:00:00:00" else MacLookup().lookup(self._mac)
+        try:
+            self._vendor = "UNKNOWN" if mac == "00:00:00:00:00:00" else MacLookup().lookup(self._mac)
+        except:
+            self._vendor = "UNKNOWN"
         logging.info("New host created [IP: {}, MAC: {}, Vendor: {}]".format(self._ip, self._mac, self._vendor))
         self._services = []
 
