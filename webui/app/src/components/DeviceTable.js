@@ -27,12 +27,12 @@ class DeviceTable extends React.Component {
     render() {
         const columns = [
             { field: 'id', headerName: 'ID' },
-            { field: 'mac', headerName: 'MAC' },
+            { field: 'mac', headerName: 'MAC', width:120 },
             { field: 'ip', headerName: 'IP' },
-            { field: 'hostname', headerName: 'Hostname' },
+            { field: 'hostname', headerName: 'Hostname' , width:200},
             { field: 'first_seen', headerName: 'First seen' },
             { field: 'last_seen', headerName: 'Last seen' },
-            { field: 'vendor', headerName: 'Vendor' },
+            { field: 'vendor', headerName: 'Vendor' , width:220},
         ];
 
         let ret;

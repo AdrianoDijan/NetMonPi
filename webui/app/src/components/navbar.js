@@ -1,6 +1,7 @@
 import react from 'react'
 import { Navbar, Nav, NavbarBrand, Button } from 'react-bootstrap';
 import logo from "../slike/net_head.png"
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 
 function AlatnaTraka() {
@@ -15,7 +16,6 @@ function AlatnaTraka() {
       </Navbar.Collapse>
 
       <Nav>
-
         <Button variant="outline-light">
           Log in
         </Button>

@@ -60,6 +60,10 @@
   text-align: center;
 }
 
+.MuiToolbar-root {
+  width: 100%;
+}
+
 @media screen and (max-width: 800px) {
   .flexbox-item3 {
     width: 100%; /* The width is 100%, when the viewport is 800px or smaller */
