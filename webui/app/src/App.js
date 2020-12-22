@@ -1,8 +1,8 @@
 import React from 'react'
 import './App.css';
 import AlatnaTraka from './components/navbar'
-import Graf from './components/graf'
-import BasicTable from './components/tablica'
+import ChartContainer from './components/ChartContainer'
+import BasicTable from './components/DeviceTable'
 import Kartica from './components/Card1'
 import Kartica2 from './components/Card2'
 import Kartica1 from './components/Card1'
@@ -10,6 +10,7 @@ import Grid from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Paper'
 import { makeStyles } from '@material-ui/core/styles'
 import Divider from '@material-ui/core/Divider'
+import DeviceTable from './components/DeviceTable';
 
 class App extends React.Component {
   constructor() {
@@ -43,7 +44,7 @@ class App extends React.Component {
         <Grid item container>
           <Grid item xs={1}></Grid>
           <Grid item xs={10}>
-          <Paper variant="outlined"><Graf/></Paper>
+          <Paper variant="outlined"><ChartContainer/></Paper>
           </Grid>
           <Grid item xs={1}></Grid>
         </Grid>
@@ -51,7 +52,7 @@ class App extends React.Component {
         <Grid item container>
         <Grid item xs={1}></Grid>
         <Grid item xs={10}>
-          <Paper><BasicTable/></Paper>
+          <Paper><DeviceTable/></Paper>
         </Grid>
         <Grid item xs={1}></Grid>
       </Grid>
