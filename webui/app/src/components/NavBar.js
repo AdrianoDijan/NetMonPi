@@ -5,6 +5,14 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import logo from '../slike/net_head.png'
+import Login from './login'
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
+import { lightBlue, red } from '@material-ui/core/colors';
 
 
 
@@ -23,6 +31,7 @@ export default function ButtonAppBar() {
   const classes = useStyles();
 
   return (
+    <Router>
     <div className={classes.root}>
       <AppBar position="fixed">
         <Toolbar>
@@ -30,12 +39,14 @@ export default function ButtonAppBar() {
           <Typography variant="h5" className={classes.title}>
             NetMonPi
           </Typography>
-          <Button color="inherit">Login</Button>
+          <Button color="inherit" onClick={() => {<Link to="./login"/>}}>Login</Button>
           <Button color="inherit">Register</Button>
         </Toolbar>
       </AppBar>
       <Toolbar/>
       <Toolbar/>
     </div>
+    <Route path="./login" component={Login}/>
+    </Router>
   );
 }

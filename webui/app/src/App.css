@@ -1,0 +1,5 @@
+.page {
+    background-image: url(./slike/universe.jpg),linear-gradient(to right, red, orange, yellow);
+    background-position: center;
+    background-repeat: repeat;
+}

@@ -55,7 +55,7 @@ class App extends React.Component {
   render() {
     return (
       <ThemeProvider theme={this.theme}>
-        <div className={"App"}>
+        <div className={"App"} className="page">
           <MyNavbar />
           <Grid container xs={12} spacing={3} justify={"center"} direction={"column"}>
             <Grid item container spacing={3} justify={"center"} direction={"row"}>
