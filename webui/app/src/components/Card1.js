@@ -1,8 +1,9 @@
 import React from 'react'
 import Card from '@material-ui/core/Card'
-import CardHeader from '@material-ui/core/CardHeader'
 import CardContent from '@material-ui/core/CardContent'
 import user from '../slike/user.svg'
+import { Typography } from '@material-ui/core'
+import Title from './Title'
 
 class Kartica1 extends React.Component {
     constructor(props) {
@@ -12,23 +13,14 @@ class Kartica1 extends React.Component {
 
     render() {
         return(
-        //     <Card style={{width: '100%'}}>
-        //         <Card.Header className="text-center">
-        //         Broj korisnika
-        //         </Card.Header>
-
-        //         <Card.Body className="text-center">
-                
-        // <h2><img src={user} width="10%"></img> 10 </h2>
-        //         </Card.Body>
-        //     </Card>
-
-        <Card variant="outlined">
-            <CardHeader title="Broj korisnika">
-                
-            </CardHeader>
+        <Card>
             <CardContent>
-            <h2><img src={user} width="10%"></img> 10 </h2>
+            <Title>
+                Broj korisnika
+            </Title>
+            <Typography component="body1" variant="h5">
+            <img src={user} alt="" width="10%"></img> 10
+            </Typography>
             </CardContent>
         </Card>
 

@@ -1,5 +1,6 @@
 import React from 'react'
 import { DataGrid } from '@material-ui/data-grid';
+import 'fontsource-roboto';
 
 class DeviceTable extends React.Component {
     constructor(props) {
@@ -15,7 +16,7 @@ class DeviceTable extends React.Component {
             .then(res => res.json())
             .then(res => {
                 let d1 = [];
-                for (let i = 0; i<res.length; i++) {
+                for (let i = 0; i < res.length; i++) {
                     d1[i] = res[i];
                     d1[i]['id'] = i;
                 }
@@ -27,30 +28,28 @@ class DeviceTable extends React.Component {
     render() {
         const columns = [
             { field: 'id', headerName: 'ID' },
-            { field: 'mac', headerName: 'MAC', width:120 },
+            { field: 'mac', headerName: 'MAC', width: 120 },
             { field: 'ip', headerName: 'IP' },
-            { field: 'hostname', headerName: 'Hostname' , width:200},
+            { field: 'hostname', headerName: 'Hostname', width: 200 },
             { field: 'first_seen', headerName: 'First seen' },
             { field: 'last_seen', headerName: 'Last seen' },
-            { field: 'vendor', headerName: 'Vendor' , width:220},
+            { field: 'vendor', headerName: 'Vendor', width: 220 },
         ];
 
-        let ret;
-
         if (this.state.isLoaded) {
-            ret = <div style={{ height: 400, width: '100%' }}>
-                <DataGrid rows={this.state.data} columns={columns} pageSize={5} />
-            </div>
+            return (
+                <div style={{ height: 400, width: '100%' }}>
+                    <DataGrid rows={this.state.data} columns={columns} pageSize={5} />
+                </div>
+            );
         }
         else {
-            ret = <div style={{ height: 400, width: '100%' }}>
-                <h1>Loading...</h1>
-            </div>
+            return (
+                <div style={{ height: 400, width: '100%' }}>
+                    <h1>Loading...</h1>
+                </div>
+            );
         }
-
-        return (
-            ret
-        )
     }
 }
 

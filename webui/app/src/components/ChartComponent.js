@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import Chart from "chart.js";
-import moment from "moment"
-import classes from "./LineGraph.module.css";
-import Card from '@material-ui/core/Card'
+
 
 Chart.defaults.global.defaultFontFamily = "'PT Sans', sans-serif"
 Chart.defaults.global.legend.display = false;
@@ -39,11 +37,6 @@ class ChartComponent extends Component {
                 ]
             },
             options: {
-                title: {
-                    display: true,
-                    text: 'WAN Bandwith',
-                    fontColor: 'rgb(204, 0, 0)'
-                },
                 scales: {
                     yAxes: [{
                         scaleLabel: {
@@ -91,13 +84,11 @@ class ChartComponent extends Component {
     }
 
     componentWillReceiveProps(nextProps, nextContext) {
-        console.log("Getting props")
-        console.log(nextProps);
-        this.state.chart.data.datasets[0].data = nextProps.txData;
-        this.state.chart.data.datasets[1].data = nextProps.rxData;
-        this.state.chart.data.labels = nextProps.chartLabels;
-        console.log(this.state.chart.data)
-        this.state.chart.update();
+        let chart = this.state.chart
+        chart.data.datasets[0].data = nextProps.txData;
+        chart.data.datasets[1].data = nextProps.rxData;
+        chart.data.labels = nextProps.chartLabels;
+        chart.update();
     }
 
     render() {

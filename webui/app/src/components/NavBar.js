@@ -6,6 +6,8 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import logo from '../slike/net_head.png'
 
+
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -22,9 +24,9 @@ export default function ButtonAppBar() {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar position="fixed">
         <Toolbar>
-          <img src={logo} width="30px"></img>
+          <img src={logo} alt="" width="30px"></img>
           <Typography variant="h5" className={classes.title}>
             NetMonPi
           </Typography>
@@ -32,6 +34,8 @@ export default function ButtonAppBar() {
           <Button color="inherit">Register</Button>
         </Toolbar>
       </AppBar>
+      <Toolbar/>
+      <Toolbar/>
     </div>
   );
 }
