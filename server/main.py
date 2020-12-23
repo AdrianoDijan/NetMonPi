@@ -8,6 +8,30 @@ import time
 import threading
 import psycopg2
 from datetime import datetime
+import speedtest
+
+def runSpeedtest(host):
+    threads = 4
+    logging.info("Running speedtest")
+    st = speedtest.Speedtest()
+    st.get_best_server()
+    st.download(threads=threads)
+    st.upload(pre_allocate=False, threads=threads)
+    st.results.share()
+
+    results = st.results.dict()
+    results = {
+        "download": results["download"],
+        "upload": results["upload"],
+        "ping": results["ping"],
+        "url": results["share"],
+    }
+
+    influx.writeSpeedtestMeasurement(host, results)
+
+def speedtestDaemon(host):
+    runSpeedtest(host)
+    time.sleep(60*30)
 
 
 def snmpMonitoring(host, community):
@@ -32,8 +56,12 @@ def main():
     daemonThread = threading.Thread(target=loopDaemon, args=("enp4s4",))
     daemonThread.start()
 
+    speedtestThread = threading.Thread(target=speedtestDaemon, args=("10.10.0.9",))
+    speedtestThread.start()
+
     daemonThread.join()
     snmpThread.join()
+    speedtestThread.join()
 
     logging.info("DONE")
 
