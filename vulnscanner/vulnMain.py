@@ -10,9 +10,12 @@ def main():
     for cveItem in apiResponseJson.get("result").get("CVE_Items"):
         exploitList.append(GetCveData(cveItem).exploitDict)
 
+    logging.info("Retrieved exploits sorting by base score")
     exploitList = sorted(exploitList, key=lambda k: k['baseScore'], reverse=True)
+    logging.info("Getting 3 best exploits")
     exploitList = exploitList[:3]
 
+    logging.info("Output exploits")
     for item in exploitList:
         for key, value in item.items():
             print(key, ' : ', value)
