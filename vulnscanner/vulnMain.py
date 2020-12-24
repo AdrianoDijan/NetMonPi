@@ -1,7 +1,10 @@
 from vulnscanner.getcvedata import GetCveData
 from vulnscanner.getapiresponse import GetApiResponse
+import logging
 
 def main():
+    logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)-8s %(message)s')
+    logging.info("Starting VulnScannerV2")
     apiResponseJson = GetApiResponse("Mikrotik", "UNKNOWN", "UNKNOWN", "UNKNOWN", "UNKNOWN").apiResponseJson
     exploitList = []
     for cveItem in apiResponseJson.get("result").get("CVE_Items"):
