@@ -18,7 +18,7 @@ class Kartica2 extends React.Component {
                     <Title>
                         Broj uređaja
                     </Title>
-                    <Typography component="body1" variant="h5">
+                    <Typography component="span" variant="h5">
                         <img src={device} alt="" width="10%"></img> 8
                     </Typography>
                 </CardContent>

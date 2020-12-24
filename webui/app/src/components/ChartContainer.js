@@ -14,6 +14,7 @@ class ChartContainer extends React.Component {
     };
 
     componentDidMount() {
+        this.fetchData = () => {
         fetch("http://localhost:3080/api/v1/bandwidth/lastday")
             .then(response => response.json())
             .then(data => {
@@ -33,6 +34,9 @@ class ChartContainer extends React.Component {
 
                 this.setState({ txData: txOctets, rxData: rxOctets, chartLabels: labels });
             });
+        }
+        this.fetchData()
+        setInterval(this.fetchData, 2000);
     }
 
     render() {

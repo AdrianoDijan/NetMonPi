@@ -1,11 +1,8 @@
 import React, { Component } from 'react'
 import Chart from "chart.js";
+import { useTheme } from '@material-ui/core';
 
-
-Chart.defaults.global.defaultFontFamily = "'PT Sans', sans-serif"
-Chart.defaults.global.legend.display = false;
-
-class ChartComponent extends Component {
+class ChartComponentClass extends Component {
 
     constructor(props) {
         super(props);
@@ -17,7 +14,12 @@ class ChartComponent extends Component {
     chartRef = React.createRef();
 
     componentDidMount() {
+        const {theme} = this.props
         const myChartRef = this.chartRef.current.getContext("2d");
+
+        Chart.defaults.global.defaultFontColor = theme.palette.text.primary;
+        Chart.defaults.global.defaultFontFamily = theme.typography.fontFamily;
+        Chart.defaults.global.legend.display = false;
 
         let chartjsObj = new Chart(myChartRef, 
             {
@@ -69,6 +71,9 @@ class ChartComponent extends Component {
                     mode: 'index',
                     position: 'average',
                     intersect: false,
+                    backgroundColor: theme.palette.text.primary,
+                    titleFontColor: theme.palette.primary.chartTitle,
+                    bodyFontColor: theme.palette.primary.chartText,
                     callbacks: {
                         label: (item) => { return item.yLabel + ' MB/s' }
                     }
@@ -101,6 +106,10 @@ class ChartComponent extends Component {
             </div>
         )
     }
-}
+};
 
-export default ChartComponent;
+export default function ChartComponent(props) {
+    const theme = useTheme();
+
+    return <ChartComponentClass {...props} theme={theme}/>;
+}

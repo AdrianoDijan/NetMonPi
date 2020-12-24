@@ -6,15 +6,32 @@ import Kartica1 from './components/Card1'
 import DeviceTable from './components/DeviceTable';
 import MyNavbar from './components/NavBar'
 import Title from './components/Title'
-import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import { Card, CardContent, Grid, Paper} from '@material-ui/core';
-
+import { ThemeProvider, createMuiTheme, responsiveFontSizes } from '@material-ui/core/styles';
+import { Card, CardContent, CssBaseline, Grid, Paper} from '@material-ui/core';
+import '@fontsource/poppins'
 
 class App extends React.Component {
   constructor() {
     super()
     this.state = {}
     this.theme = createMuiTheme({
+      palette: {
+        primary: {
+          main: '#2a8bf4',
+          chartTitle: '#43464a',
+          chartText: '#5a5b5c'
+        },
+        text: {
+          primary: "#d3d7db"
+        },
+        background: {
+          default: "#1f1e2e",
+          paper: "#28293d"
+        },
+        secondary: {
+          main: '#f57f17',
+        },
+      },
       root: {
         display: 'flex',
       },
@@ -42,23 +59,34 @@ class App extends React.Component {
       },
       typography: {
         fontFamily: [
-          'Nunito',
+          'Poppins',
           'Roboto',
           '"Helvetica Neue"',
           'Arial',
           'sans-serif'
         ].join(','),
       },
+      card: {
+        background: "rgb(70, 0, 0)",
+      },
+      page: {
+        backgroundColor: "rgb(70,80,90)"
+      },
+      table: {
+        border: "none"
+      }
     });
+    this.theme = responsiveFontSizes(this.theme)
   }
 
   render() {
     return (
       <ThemeProvider theme={this.theme}>
-        <div className={"App"} className="page">
+        <CssBaseline />
+        <div>
           <MyNavbar />
-          <Grid container xs={12} spacing={3} justify={"center"} direction={"column"}>
-            <Grid item container spacing={3} justify={"center"} direction={"row"}>
+          <Grid container spacing={3} justify={"center"} direction={"column"} style={{width: "100%"}}>
+            <Grid item container justify={"center"} spacing={3} direction={"row"}>
               <Grid item xs={5}>
                 <Paper>
                   <Kartica1 />
