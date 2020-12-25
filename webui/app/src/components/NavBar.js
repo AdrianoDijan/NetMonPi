@@ -12,8 +12,8 @@ export default class NavBar extends React.Component {
       <div>
         <AppBar position="fixed">
           <Toolbar>
-            <Typography variant="h6" style={{ flex: 1 }}>
-              <NetworkCheckIcon style={{ paddingRight: "5px", fontSize: "32" }} />
+          <NetworkCheckIcon style={{ paddingRight: "5px", fontSize: "32" }} />
+            <Typography variant="h6" style={{ flexGrow: 1 }}>
               NetMonPi
               </Typography>
             <Button color="inherit">Login</Button>

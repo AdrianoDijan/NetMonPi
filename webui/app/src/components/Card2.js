@@ -1,28 +1,44 @@
 import React from 'react'
-import Card from '@material-ui/core/Card'
-import CardContent from '@material-ui/core/CardContent'
-import device from '../slike/device.png'
-import Title from './Title'
-import { Typography } from '@material-ui/core'
+import { Grid } from '@material-ui/core'
+import { Typography, Paper } from '@material-ui/core'
+import ComputerIcon from '@material-ui/icons/Computer';
 
 class Kartica2 extends React.Component {
     constructor(props) {
         super(props)
-        this.state = {}
+        this.state = { count: 0, isLoaded: false }
+    }
+
+    componentDidMount() {
+        this.fetchData = () => {
+            fetch("http://localhost:3080/api/v1/devices/online")
+                .then(res => res.json())
+                .then(res => {
+                    this.setState({ count: res.length, isLoaded: true });
+                })
+                .catch(err => console.log(err.message))
+        }
+        this.fetchData()
+        setInterval(this.fetchData, 10000)
     }
 
     render() {
         return (
-            <Card>
-                <CardContent>
-                    <Title>
-                        Broj uređaja
-                    </Title>
-                    <Typography component="span" variant="h5">
-                        <img src={device} alt="" width="10%"></img> 8
-                    </Typography>
-                </CardContent>
-            </Card >
+            <Paper variant="square" margin="20%">
+                <Grid container direction={"row"} justify={"center"} spacing={2}>
+                    <Grid item>
+                        <ComputerIcon fontSize="large" />
+                    </Grid>
+                    <Grid item>
+                        <Typography variant="h5">
+                            Online uređaji
+                        </Typography>
+                    </Grid>
+                </Grid>
+                <Typography variant="h5">
+                    {this.state.count}
+                </Typography>
+            </Paper >
 
         )
     }

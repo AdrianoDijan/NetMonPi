@@ -21,20 +21,33 @@ class ChartComponentClass extends Component {
         Chart.defaults.global.defaultFontFamily = theme.typography.fontFamily;
         Chart.defaults.global.legend.display = false;
 
+        let gradientStrokeBlue = myChartRef.createLinearGradient(0, 200, 0, 0);
+
+        gradientStrokeBlue.addColorStop(1, "rgba(29,140,248,0.6)");
+        gradientStrokeBlue.addColorStop(0, "rgba(29,140,248,0)");
+
+        let gradientStrokeRed = myChartRef.createLinearGradient(0, 280, 0, 0);
+
+        gradientStrokeRed.addColorStop(1, "rgba(148, 50, 41,0.8)");
+        gradientStrokeRed.addColorStop(0, "rgba(148, 50, 41,0.0)");
+
+
         let chartjsObj = new Chart(myChartRef, 
             {
             type: "line",
             data: {
                 datasets: [
                     {
+                        fill: 1,
                         label: "Download",
-                        borderColor: "rgb(204,0,0)",
-                        backgroundColor: "rgba(240, 10, 10, 0.2)",
+                        borderColor: "#a31818",
+                        backgroundColor: gradientStrokeRed,
+                        
                     },
                     {
                         label: "Upload",
-                        borderColor: "rgb(0, 0, 255)",
-                        backgroundColor: "rgba(10, 10, 240, 0.2)",
+                        borderColor: "#1f8ef1",
+                        negativeBackgroundColor: gradientStrokeBlue,
                     }
                 ]
             },
@@ -44,7 +57,12 @@ class ChartComponentClass extends Component {
                         scaleLabel: {
                             display: true,
                             labelString: 'MB/s'
-                        }
+                        },
+                        gridLines: {
+                            drawBorder: false,
+                            color: "rgba(29,140,248,0.1)",
+                            zeroLineColor: "transparent",
+                          },
                     }],
                     xAxes: [{
                         type: 'time',
@@ -53,6 +71,11 @@ class ChartComponentClass extends Component {
                                 minute: 'HH:MM'
                             },
                             unit: 'minute'
+                        },
+                        gridLines: {
+                            drawBorder: false,
+                            color: "rgba(29,140,248,0.0)",
+                            zeroLineColor: "transparent",
                         },
                         ticks: {
                             autoSkip: true,

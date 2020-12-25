@@ -1,6 +1,5 @@
 import React from 'react'
 import { DataGrid } from '@material-ui/data-grid';
-import 'fontsource-roboto';
 import moment from 'moment'
 
 class DeviceTable extends React.Component {
@@ -11,20 +10,18 @@ class DeviceTable extends React.Component {
             isLoaded: false,
         };
         this.columns = [
-            { field: 'mac', headerName: 'MAC', flex: 1 },
-            { field: 'ip', headerName: 'IP' , flex: 1},
-            { field: 'hostname', headerName: 'Hostname', flex: 1.5 },
-            { field: 'first_seen', headerName: 'First seen', type: "dateTime", flex: 1.5 },
-            { field: 'last_seen', headerName: 'Last seen',  type: "dateTime", flex: 1.5 },
-            { field: 'vendor', headerName: 'Vendor', flex: 2},
+            { field: 'hostname', headerName: 'Hostname', width: 300 },
+            { field: 'mac', headerName: 'MAC', width: 180 },
+            { field: 'ip', headerName: 'IP' , width: 120},
+            { field: 'first_seen', headerName: 'First seen', type: "dateTime", width: 220 },
+            { field: 'last_seen', headerName: 'Last seen',  type: "dateTime", width: 220},
+            { field: 'vendor', headerName: 'Vendor', flex: 1},
         ];
     }
 
     componentDidMount() {
-        console.log(this.state.data)
-
         this.fetchData = () => {
-            fetch("http://localhost:3080/api/v1/devices/all")
+            fetch("http://localhost:3080/api/v1/devices/online")
             .then(res => res.json())
             .then(res => {
                 let d1 = [];
@@ -44,7 +41,7 @@ class DeviceTable extends React.Component {
 
     render() {
         return (
-            <div style={{ height: 600, width: '100%'}}>
+            <div style={{ height: 600, width: '100%', padding: "1%"}}>
                 <DataGrid rows={this.state.data} columns={this.columns} autoPageSize={true} disableClickEventBubbling={true} loading={!this.state.isLoaded}/>
             </div>
         );

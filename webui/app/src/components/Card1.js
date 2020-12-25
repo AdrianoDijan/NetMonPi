@@ -1,7 +1,6 @@
 import React from 'react'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
-import user from '../slike/user.svg'
 import { Typography} from '@material-ui/core'
 import Title from './Title'
 
@@ -19,7 +18,7 @@ class Kartica1 extends React.Component {
                 Broj korisnika
             </Title>
             <Typography component="span" variant="h5">
-            <img src={user} alt="" width="10%"></img> 10
+            10
             </Typography>
             </CardContent>
         </Card>
