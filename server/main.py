@@ -30,8 +30,9 @@ def runSpeedtest(host):
     influx.writeSpeedtestMeasurement(host, results)
 
 def speedtestDaemon(host):
-    runSpeedtest(host)
-    time.sleep(60*30)
+    while True:
+        runSpeedtest(host)
+        time.sleep(30*60)
 
 
 def snmpMonitoring(host, community):

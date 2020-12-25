@@ -67,26 +67,47 @@ app.get('/api/v1/bandwidth/:time', (request, response) => {
 });
 
 app.get('/api/v1/traffic/all', (request, response) => {
+    let time = request.params.time
     query = `SELECT mean("txInOctets")
                   AS "mean_txInOctets",
                   mean("txOutOctets")
                   AS "mean_txOutOctets" 
                   FROM "ifBandwidth"
-                  WHERE time > now()-48h
-                  AND "host"=${Influx.escape.stringLit(host)}
-                  AND "interface"='${interface}'
-                  group by time(1m)
+                  WHERE time > now()-${time}
+                  group by time(1h)
     `
     influx.query(query)
         .then(result => response.status(200).json(result))
         .catch(error => response.status(500).json({ error }));
 });
 
-
+app.get('/api/v1/speedtest/last/:time', (request, response) => {
+    query = `SELECT "download",
+                  "upload",
+                  "ping",
+                  "url"
+                  FROM "speedtest"
+                  WHERE time > now()-${request.params.time}
+    `
+    influx.query(query)
+        .then(result => response.status(200).json(result))
+        .catch(error => response.status(500).json({ error }));
+});
 
 app.get('/api/v1/devices/all', (request, response) => {
     pool.query(`SELECT * 
                 FROM host 
+                ORDER by last_seen DESC`, (error, results) => {
+        if (error) {
+            throw error
+        }
+        response.status(200).json(results.rows)
+    })
+});
+
+app.get('/api/v1/devices/online', (request, response) => {
+    pool.query(`SELECT * 
+                FROM host WHERE last_seen > (now()-interval '90 s')
                 ORDER by last_seen DESC`, (error, results) => {
         if (error) {
             throw error
