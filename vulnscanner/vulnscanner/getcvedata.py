@@ -27,5 +27,6 @@ class GetCveData():
         getCveDataLogger.info("Base score retrieval")
         baseScore = GetImpactData(self.cveItem).baseScore
         getCveDataLogger.info("Generating exploitDict")
-        self.exploitDict.update(cveNumber=cveNumber, referenceSource=referenceDataDict["url"],
-                                descriptionValue=descriptionValue, baseScore=baseScore)
+        if baseScore != 0:
+            self.exploitDict.update(cveNumber=cveNumber, referenceSource=referenceDataDict["url"],
+                                    descriptionValue=descriptionValue, baseScore=baseScore)
