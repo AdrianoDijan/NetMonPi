@@ -21,11 +21,13 @@ class GetReferencesData():
         referenceItemIndex = 0
         exploitFlagDict = {}
         vendorAdvisoryFlagDict = {}
+        getReferenceDataLogger.info("Checking for \"Exploit\" tag")
         if self.ifExploitExists(referenceDataItem):
             getReferenceDataLogger.info("Tag \"Exploit\" exists")
             exploitFlagDict["tag"] = "Exploit"
             exploitFlagDict["index"] = str(referenceItemIndex)
             self.referenceTagAndIndexMap.append(exploitFlagDict)
+        getReferenceDataLogger.info("Checking for \"Vendor Advisory\" tag")
         if self.ifVendorAdvisoryExists(referenceDataItem):
             getReferenceDataLogger.info("Tag \"Vendor Advisory\" exists")
             vendorAdvisoryFlagDict.update({'tag':'Vendor Advisory'})
@@ -34,14 +36,12 @@ class GetReferencesData():
         referenceItemIndex += 1
 
     def ifExploitExists(self, referenceDataItem):
-        getReferenceDataLogger.info("Checking for \"Exploit\" tag")
         if "tags" in referenceDataItem:
             if any("Exploit" in tags for tags in referenceDataItem.get("tags")):
                 return True
             return False
 
     def ifVendorAdvisoryExists(self, referenceDataItem):
-        getReferenceDataLogger.info("Checking for \"Vendor Advisory\" tag")
         if "tags" in referenceDataItem:
             if any("Vendor Advisory" in tags for tags in referenceDataItem.get("tags")):
                 return True
@@ -52,10 +52,8 @@ class GetReferencesData():
         for tagsMap in self.referenceTagAndIndexMap:
             if tagsMap["tag"] == "Exploit":
                 return self.cveItem.get("cve").get("references").get("reference_data")[int(tagsMap["index"])]
-                # return self.apiResponse[int(tagsMap["index"])]
             elif tagsMap["tag"] == "Vendor Advisory":
                 return self.cveItem.get("cve").get("references").get("reference_data")[int(tagsMap["index"])]
-                # return self.apiResponse[int(tagsMap["index"])]
             else:
                 return self.cveItem.get("cve").get("references").get("reference_data")[0]
         return self.cveItem.get("cve").get("references").get("reference_data")[0]
