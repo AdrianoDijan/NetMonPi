@@ -7,10 +7,9 @@ import os
 import requests
 
 '''
-Search by product name and check version excluding with data in postgresql
-If this condition is true fetch Description and chek for keyword count in description if grater than 1 accept
-If API don't retreive result search by product name, get CVE with highest score and notify checking for version
-Form an cpe23uri -> Form: cpe:2.3:[part=a/o/h]:[vendor]:[version]:*:*:*:*:*:*:*
+Add try - except syntax
+Fix logger
+add exploit id -> some devices can have same CVE number
 '''
 
 def main():
@@ -21,9 +20,9 @@ def main():
     for queryData in queryDataList:
         apiResponseJson = GetApiResponse(
             queryData["product"], queryData["version"], queryData["cpe"]).apiResponseJson
-        if queryData["product"] == "Microsoft HTTPAPI httpd":
-            test = 0
         exploitList = []
+        if queryData["product"] == "Samba smbd":
+            test = 0
         if apiResponseJson != None and apiResponseJson.get("result") != None:
             if "CVE_Items" in apiResponseJson.get("result"):
                 for cveItem in apiResponseJson.get("result").get("CVE_Items"):
@@ -37,8 +36,7 @@ def main():
             for exploit in exploitList:
                 if exploit["descriptionValue"] != "":
                     exploitList = exploitList[exploitCounter]
-                    #ImportExploitData(exploitList["cveNumber"], exploitList["referenceSource"], exploitList["descriptionValue"], exploitList["baseScore"], exploitList["serviceId"])
-
+                    ImportExploitData(exploitList["cveNumber"], exploitList["referenceSource"], exploitList["descriptionValue"], exploitList["baseScore"], exploitList["serviceId"])
                     logging.info("Output exploits")
                     print("Exploit info for: {} - {}".format(queryData["product"], queryData["version"]))
                     for key, value in exploitList.items():

@@ -1,6 +1,8 @@
-from vulnscanner.getreferencesdata import GetReferencesData
-from vulnscanner.getdescriptiondata import GetDescriptionData
-from vulnscanner.getimpactdata import GetImpactData
+from .getreferencesdata import GetReferencesData
+from .getdescriptiondata import GetDescriptionData
+from .getimpactdata import GetImpactData
+from .getversion import GetVersion
+from .checkversion import CheckVersion
 import json
 import logging
 
@@ -30,6 +32,8 @@ class GetCveData():
         getCveDataLogger.info("Base score retrieval")
         baseScore = GetImpactData(self.cveItem).baseScore
         getCveDataLogger.info("Generating exploitDict")
+        versionData = GetVersion(self.cveItem).versionData
+        #and CheckVersion(versionData=versionData, product=self.product, version=self.version).flag
         if baseScore != 0:
             self.exploitDict.update(cveNumber=cveNumber, referenceSource=referenceDataDict["url"],
-                                    descriptionValue=descriptionValue, baseScore=baseScore, serviceId=self.serviceId)
+                                    descriptionValue=descriptionValue, baseScore=baseScore, serviceId=self.serviceId, versionData=versionData)
