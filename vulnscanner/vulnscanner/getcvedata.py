@@ -33,7 +33,6 @@ class GetCveData():
         baseScore = GetImpactData(self.cveItem).baseScore
         getCveDataLogger.info("Generating exploitDict")
         versionData = GetVersion(self.cveItem).versionData
-        #and CheckVersion(versionData=versionData, product=self.product, version=self.version).flag
         if baseScore != 0:
             self.exploitDict.update(cveNumber=cveNumber, referenceSource=referenceDataDict["url"],
                                     descriptionValue=descriptionValue, baseScore=baseScore, serviceId=self.serviceId, versionData=versionData)

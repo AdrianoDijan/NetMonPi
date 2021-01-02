@@ -1,6 +1,3 @@
-#params: version, cpe, product -> network
-#        hostname, vendor -> host
-# Query select hostname, vendor, version, cpe, product from host inner join hostservice on host.mac = hostservice.mac inner join service on hostservice.service_id = service.service_id
 class MakeQuery():
     def __init__(self, version=None, cpe=None, product=None, hostname=None, vendor=None):
         self.version = version

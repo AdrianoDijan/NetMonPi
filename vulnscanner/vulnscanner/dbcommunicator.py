@@ -18,18 +18,15 @@ class DbCommunication():
 
     def connectToDatabase(self):
         try:
-            
             dbParams = dbConfig()
             dbConnectionLogger.info("Connecting to the PostgreSQL database")
             self.dbConnection = psycopg2.connect(**dbParams)
             self.getDataRows()
-
             for i in range(self.dbCursor.rowcount):
                 self.fetchedRow = self.dbCursor.fetchone()
                 queryDataDict = self.queryTupleToDict()
                 if (queryDataDict not in self.queryDataList) and self.checkUnknownRow() and self.checkSameRow():
                     self.queryDataList.append(queryDataDict)
-
             self.dbCursor.close()
         except (Exception, psycopg2.DatabaseError) as error:
             dbConnectionLogger.info("Connection error: {}".format(error))

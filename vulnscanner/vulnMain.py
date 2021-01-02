@@ -9,7 +9,7 @@ import requests
 '''
 Add try - except syntax
 Fix logger
-add exploit id -> some devices can have same CVE number
+Check if row exists
 '''
 
 def main():
@@ -21,8 +21,6 @@ def main():
         apiResponseJson = GetApiResponse(
             queryData["product"], queryData["version"], queryData["cpe"]).apiResponseJson
         exploitList = []
-        if queryData["product"] == "Samba smbd":
-            test = 0
         if apiResponseJson != None and apiResponseJson.get("result") != None:
             if "CVE_Items" in apiResponseJson.get("result"):
                 for cveItem in apiResponseJson.get("result").get("CVE_Items"):
@@ -38,14 +36,8 @@ def main():
                     exploitList = exploitList[exploitCounter]
                     ImportExploitData(exploitList["cveNumber"], exploitList["referenceSource"], exploitList["descriptionValue"], exploitList["baseScore"], exploitList["serviceId"])
                     logging.info("Output exploits")
-                    print("Exploit info for: {} - {}".format(queryData["product"], queryData["version"]))
-                    for key, value in exploitList.items():
-                        print(key, ' : ', value)
-                    print("\n")
-                    resultsNum += 1
                     break
                 exploitCounter += 1
-    print(resultsNum)
 
 if __name__ == "__main__":
     main()

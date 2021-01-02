@@ -25,4 +25,3 @@ class CheckVersion():
     def replaceXInVersion(self):
         self.version = self.version.lower()
         self.version = self.version.replace("x", "")
-        # self.version = self.version.split(" ")

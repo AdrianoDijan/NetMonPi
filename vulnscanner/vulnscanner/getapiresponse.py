@@ -83,8 +83,6 @@ class GetApiResponse():
         if self.requestUrl != "":
             getApiResponseLogger.info("Request URL: {}".format(self.requestUrl))
             getApiResponseLogger.info("Getting API response")
-            print(self.apiResponseJson.status_code)
-            print(self.requestUrl)
             if self.apiResponseJson.status_code == 200:
                 getApiResponseLogger.info("API retrieved successfully. Status code: {}".format(self.apiResponseJson.status_code))
                 self.apiResponseJson = self.apiResponseJson.json()
