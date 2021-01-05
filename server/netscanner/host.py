@@ -43,12 +43,16 @@ class Host():
                 protocol = port["protocol"]
                 try:
                     product = port["service"]["product"]
+                except:
+                    product = ""
+                try:
                     version = port["service"]["version"]
+                except:
+                    version = ""
+                try:
                     cpe = port["cpe"][0]["cpe"]
                 except:
-                    product = "UNKNOWN"
-                    version = "UNKNOWN"
-                    cpe = "UNKNOWN"
+                    cpe = ""
                 logging.info("New service found [Port: {}, Protocol: {}]".format(portid, protocol))
                 self._services.append(Service(product, version, portid, protocol, cpe))
         except:
