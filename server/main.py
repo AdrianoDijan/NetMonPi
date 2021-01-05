@@ -7,7 +7,32 @@ import json
 import time
 import threading
 import psycopg2
-from datetime import datetime
+from datetime import datetime, timezone
+import speedtest
+
+def runSpeedtest(host):
+    threads = 4
+    logging.info("Running speedtest")
+    st = speedtest.Speedtest()
+    st.get_best_server()
+    st.download(threads=threads)
+    st.upload(pre_allocate=False, threads=threads)
+    st.results.share()
+
+    results = st.results.dict()
+    results = {
+        "download": results["download"],
+        "upload": results["upload"],
+        "ping": results["ping"],
+        "url": results["share"],
+    }
+
+    influx.writeSpeedtestMeasurement(host, results)
+
+def speedtestDaemon(host):
+    while True:
+        runSpeedtest(host)
+        time.sleep(30*60)
 
 
 def snmpMonitoring(host, community):
@@ -32,8 +57,12 @@ def main():
     daemonThread = threading.Thread(target=loopDaemon, args=("enp4s4",))
     daemonThread.start()
 
+    speedtestThread = threading.Thread(target=speedtestDaemon, args=("10.10.0.9",))
+    speedtestThread.start()
+
     daemonThread.join()
     snmpThread.join()
+    speedtestThread.join()
 
     logging.info("DONE")
 
@@ -94,97 +123,138 @@ def daemon(interface):
     for thread in threadPool:
         thread.join()
 
-    for host in network.getHosts():
-        query = """
-                SELECT ip FROM host
-                WHERE mac = %(mac)s
-                """
+    def manageHost(host):
+        with dbConn.cursor() as cursor:
+            query = """
+                    SELECT ip FROM host
+                    WHERE mac = %(mac)s
+                    """
+            cursor.execute(query, host.as_dict())
 
-        cursor.execute(query, host.as_dict())
-
-        try:
-            ip = cursor.fetchone()[0]
-            logging.info("Host already exists in database")
-            if ip != host.as_dict()['ip']:
-                logging.info("IP address changed, updating ({} -> {}".format(ip, host.as_dict()['ip']))
+            try:
+                ip = cursor.fetchone()[0]
+                logging.info("Host already exists in database")
                 query = """
-                        UPDATE host
-                        SET ip = %(ip)s
+                        SELECT last_scanned
+                        FROM host
                         WHERE mac = %(mac)s
                         """
-                cursor.execute(query, host.as_dict())
-            logging.info("Updating last seen field")
-            query = """
-                    UPDATE host
-                    SET last_seen = %(timestamp)s
-                    WHERE mac = %(mac)s
-                    """
-            queryValues = host.as_dict()
-            queryValues['timestamp'] = datetime.now()
-            cursor.execute(query, queryValues)
-            dbConn.commit()
-        except TypeError:
-            host.getOpenPorts()
-            query = """
-                    INSERT INTO host (mac, netaddr, first_seen, last_seen, ip, hostname, vendor)
-                    VALUES (%(mac)s, %(netaddr)s, %(timestamp)s, %(timestamp)s, %(ip)s, %(hostname)s, %(vendor)s)
-                    """
-            queryValues = host.as_dict()
-            queryValues['netaddr'] = network.as_dict()['netaddr']
-            queryValues['timestamp'] = datetime.now()
-            cursor.execute(query, queryValues)
-            dbConn.commit()
-        
-        for service in host.getServices():
-            query = """
-                    SELECT service_id FROM service
-                    WHERE product = %(product)s
-                    AND version = %(version)s
-                    AND port = %(port)s
-                    AND protocol = %(protocol)s
-                    AND cpe = %(cpe)s
-                    """
+                queryValues = host.as_dict()
+                cursor.execute(query, queryValues)
+                last_scanned = cursor.fetchone()[0]
 
-            queryValues = service.as_dict()
-            cursor.execute(query, queryValues)
-
-            try:
-                service_id = cursor.fetchone()[0]
-            except TypeError:
+                logging.info("Updating last seen field")
                 query = """
-                        INSERT INTO service (version, cpe, product, port, protocol)
-                        VALUES (%(service)s, %(cpe)s, %(product)s, %(port)s, %(protocol)s)
-                        RETURNING service_id
+                        UPDATE host
+                        SET last_seen = %(timestamp)s
+                        WHERE mac = %(mac)s
                         """
+                queryValues = host.as_dict()
+                queryValues['timestamp'] = datetime.now()
+                cursor.execute(query, queryValues)
+                dbConn.commit()
+
+                if (divmod((datetime.now(timezone.utc) - last_scanned).total_seconds(), 3600)[0] >= 2):
+                    logging.info("Updating services for host {}".format(host.as_dict()["hostname"]))
+                    host.getOpenPorts()
+                    queryValues = host.as_dict()
+                    queryValues['netaddr'] = network.as_dict()['netaddr']
+                    queryValues['timestamp'] = datetime.now()
+                    query = """
+                        UPDATE host
+                        SET last_scanned = %(timestamp)s
+                        WHERE mac = %(mac)s
+                        """
+                    cursor.execute(query, queryValues)
+
+                if ip != host.as_dict()['ip']:
+                    logging.info("IP address changed, updating ({} -> {}".format(ip, host.as_dict()['ip']))
+                    query = """
+                            UPDATE host
+                            SET ip = %(ip)s
+                            WHERE mac = %(mac)s
+                            """
+                    cursor.execute(query, host.as_dict())
+
+                dbConn.commit()
+            except:
+                host.getOpenPorts()
+                query = """
+                        INSERT INTO host (mac, netaddr, first_seen, last_seen, ip, hostname, vendor)
+                        VALUES (%(mac)s, %(netaddr)s, %(timestamp)s, %(timestamp)s, %(ip)s, %(hostname)s, %(vendor)s)
+                        """
+                queryValues = host.as_dict()
+                queryValues['netaddr'] = network.as_dict()['netaddr']
+                queryValues['timestamp'] = datetime.now()
+                cursor.execute(query, queryValues)
+                query = """
+                        UPDATE host
+                        SET last_scanned = %(timestamp)s
+                        WHERE mac = %(mac)s
+                        """
+                cursor.execute(query, queryValues)
+                dbConn.commit()
+            
+            for service in host.getServices():
+                query = """
+                        SELECT service_id FROM service
+                        WHERE product = %(product)s
+                        AND version = %(version)s
+                        AND port = %(port)s
+                        AND protocol = %(protocol)s
+                        AND cpe = %(cpe)s
+                        """
+
                 queryValues = service.as_dict()
                 cursor.execute(query, queryValues)
-                dbConn.commit()
-                service_id = cursor.fetchone()[0]
 
-            query = """
-                    SELECT service_id
-                    FROM hostservice
-                    WHERE mac = %(mac)s
-                    AND service_id = %(service_id)s
-                    """
-            queryValues = {
-                        'mac': host.as_dict()['mac'],
-                        'service_id': service_id,
-                        }
-            cursor.execute(query, queryValues)
-            dbConn.commit()
+                try:
+                    service_id = cursor.fetchone()[0]
+                except TypeError:
+                    query = """
+                            INSERT INTO service (version, cpe, product, port, protocol)
+                            VALUES (%(version)s, %(cpe)s, %(product)s, %(port)s, %(protocol)s)
+                            RETURNING service_id
+                            """
+                    queryValues = service.as_dict()
+                    cursor.execute(query, queryValues)
+                    dbConn.commit()
+                    service_id = cursor.fetchone()[0]
 
-            try:
-                service_id = cursor.fetchone()[0]
-                logging.info("Item already exists in hostservice table")
-            except TypeError:
                 query = """
-                        INSERT INTO hostservice (mac, service_id)
-                        VALUES (%(mac)s, %(service_id)s)
+                        SELECT service_id
+                        FROM hostservice
+                        WHERE mac = %(mac)s
+                        AND service_id = %(service_id)s
                         """
+                queryValues = {
+                            'mac': host.as_dict()['mac'],
+                            'service_id': service_id,
+                            }
                 cursor.execute(query, queryValues)
                 dbConn.commit()
 
+                try:
+                    service_id = cursor.fetchone()[0]
+                    logging.info("Item already exists in hostservice table")
+                except TypeError:
+                    query = """
+                            INSERT INTO hostservice (mac, service_id)
+                            VALUES (%(mac)s, %(service_id)s)
+                            """
+                    cursor.execute(query, queryValues)
+                    dbConn.commit()
+
+    threadList = []
+    for host in network.getHosts():
+        threadList.append(threading.Thread(target=manageHost, args=(host,)))
+
+    for thread in threadList:
+        thread.start()
+
+    for thread in threadList:
+        thread.join()
+            
     dbConn.close()
 
 if __name__ == '__main__':

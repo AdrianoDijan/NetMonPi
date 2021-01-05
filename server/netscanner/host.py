@@ -14,7 +14,10 @@ class Host():
         self._ip = ip
         self._mac = mac
         self._hostname = hostname
-        self._vendor = "UNKNOWN" if mac == "00:00:00:00:00:00" else MacLookup().lookup(self._mac)
+        try:
+            self._vendor = "UNKNOWN" if mac == "00:00:00:00:00:00" else MacLookup().lookup(self._mac)
+        except:
+            self._vendor = "UNKNOWN"
         logging.info("New host created [IP: {}, MAC: {}, Vendor: {}]".format(self._ip, self._mac, self._vendor))
         self._services = []
 
@@ -40,12 +43,16 @@ class Host():
                 protocol = port["protocol"]
                 try:
                     product = port["service"]["product"]
+                except:
+                    product = ""
+                try:
                     version = port["service"]["version"]
+                except:
+                    version = ""
+                try:
                     cpe = port["cpe"][0]["cpe"]
                 except:
-                    product = "UNKNOWN"
-                    version = "UNKNOWN"
-                    cpe = "UNKNOWN"
+                    cpe = ""
                 logging.info("New service found [Port: {}, Protocol: {}]".format(portid, protocol))
                 self._services.append(Service(product, version, portid, protocol, cpe))
         except:

@@ -23,3 +23,11 @@ yarn-error.log*
 *.pyc
 __pycache__
 *.json
+
+.eslintcache
+
+# vulnscanner
+database.ini
+.log
+.xml
+*/__pycache__/*

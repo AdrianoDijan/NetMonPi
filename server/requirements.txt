@@ -6,3 +6,4 @@ mac-vendor-lookup
 easysnmp
 influxdb
 psycopg2
+speedtest-cli
