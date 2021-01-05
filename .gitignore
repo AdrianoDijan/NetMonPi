@@ -26,4 +26,8 @@ __pycache__
 
 .eslintcache
 
+# vulnscanner
 database.ini
+.log
+.xml
+*/__pycache__/*
