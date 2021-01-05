@@ -21,33 +21,21 @@ class ChartComponentClass extends Component {
         Chart.defaults.global.defaultFontFamily = theme.typography.fontFamily;
         Chart.defaults.global.legend.display = false;
 
-        let gradientStrokeBlue = myChartRef.createLinearGradient(0, 200, 0, 0);
-
-        gradientStrokeBlue.addColorStop(1, "rgba(29,140,248,0.6)");
-        gradientStrokeBlue.addColorStop(0, "rgba(29,140,248,0)");
-
-        let gradientStrokeRed = myChartRef.createLinearGradient(0, 280, 0, 0);
-
-        gradientStrokeRed.addColorStop(1, "rgba(148, 50, 41,0.8)");
-        gradientStrokeRed.addColorStop(0, "rgba(148, 50, 41,0.0)");
-
-
         let chartjsObj = new Chart(myChartRef, 
             {
             type: "line",
             data: {
                 datasets: [
                     {
-                        fill: 1,
                         label: "Download",
                         borderColor: "#a31818",
-                        backgroundColor: gradientStrokeRed,
+                        backgroundColor: "rgba(148, 50, 41, 0.3)",
                         
                     },
                     {
                         label: "Upload",
                         borderColor: "#1f8ef1",
-                        negativeBackgroundColor: gradientStrokeBlue,
+                        backgroundColor: "rgba(29,140,248,0.3)",
                     }
                 ]
             },
@@ -111,11 +99,11 @@ class ChartComponentClass extends Component {
         this.setState({ chart: chartjsObj });
     }
 
-    componentWillReceiveProps(nextProps, nextContext) {
+    componentDidUpdate(nextProps, nextContext) {
         let chart = this.state.chart
-        chart.data.datasets[0].data = nextProps.txData;
-        chart.data.datasets[1].data = nextProps.rxData;
-        chart.data.labels = nextProps.chartLabels;
+        chart.data.datasets[0].data = this.props.txData;
+        chart.data.datasets[1].data = this.props.rxData;
+        chart.data.labels = this.props.chartLabels;
         chart.update();
     }
 

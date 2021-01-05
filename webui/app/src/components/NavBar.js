@@ -12,7 +12,7 @@ export default class NavBar extends React.Component {
       <div>
         <AppBar position="fixed">
           <Toolbar>
-          <NetworkCheckIcon style={{ paddingRight: "5px", fontSize: "32" }} />
+            <NetworkCheckIcon style={{ paddingRight: "5px", fontSize: "32" }} />
             <Typography variant="h6" style={{ flexGrow: 1 }}>
               NetMonPi
               </Typography>
@@ -20,8 +20,8 @@ export default class NavBar extends React.Component {
             <Button color="inherit">Register</Button>
           </Toolbar>
         </AppBar>
-        <Toolbar />
-        <Toolbar />
+        <Toolbar/>
+        <Toolbar/>
       </div>
     );
   }

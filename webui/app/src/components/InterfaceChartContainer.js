@@ -1,6 +1,6 @@
 import React from 'react';
 import moment from 'moment';
-import ChartComponent from './ChartComponent';
+import ChartComponent from './InterfaceChartComponent';
 
 class ChartContainer extends React.Component {
 
@@ -36,7 +36,11 @@ class ChartContainer extends React.Component {
             });
         }
         this.fetchData()
-        setInterval(this.fetchData, 2000);
+        this.intervalHandler = setInterval(this.fetchData, 2000);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.intervalHandler)
     }
 
     render() {

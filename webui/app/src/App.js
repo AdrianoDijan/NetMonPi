@@ -1,13 +1,12 @@
-import React, { Component } from "react";
+import React from "react";
 import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
 } from "react-router-dom";
-import Home from './home'
+import Dashboard from './Dashboard'
 import Login from './components/login'
-
+import './App.css';
 
 
 class App extends React.Component {
@@ -17,12 +16,11 @@ class App extends React.Component {
   }
 
   render() {
-
-    return(
+    return (
       <Router>
         <Switch>
-        <Route exact path="/home" component = {Home}/>
-        <Route exact path="/" component ={Login}/>
+          <Route exact path="/dashboard" component={Dashboard} />
+          <Route exact path="/" component={Login} />
         </Switch>
       </Router>
     )
