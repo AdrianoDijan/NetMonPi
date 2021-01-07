@@ -9,8 +9,54 @@ import threading
 import psycopg2
 from datetime import datetime, timezone
 import speedtest
+import argparse
+import configparser
 
-def runSpeedtest(host):
+def main():
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument('-c', '--config', type=str, help='Configuration file path', metavar='path', default="~/.config/netmonpi.conf")
+    parser.add_argument('-v', '--verbosity', type=str, help='Log level: DEBUG, INFO, WARNING, ERROR', metavar='LEVEL', choices=['DEBUG', 'INFO', 'WARNING', 'ERROR'], default='WARNING')
+
+    args = parser.parse_args()
+
+    config = configParser(args.config)
+
+    loglevel = getattr(logging, args.verbosity.upper(), None)
+
+    logging.basicConfig(level=loglevel,
+                        format='%(asctime)s %(levelname)-8s %(message)s')
+    logging.info("START")
+
+    snmpThreads = []
+    
+    for device in config['snmp']['devices'].split(','):
+        snmpThread = threading.Thread(target=snmpMonitoring, args=(config[device],))
+        snmpThreads.append(snmpThread)
+
+    for thread in snmpThreads:
+        thread.start()
+
+    daemonThread = threading.Thread(target=loopDaemon, args=(config['database'], config['network']))
+    daemonThread.start()
+
+    speedtestThread = threading.Thread(target=speedtestDaemon, args=(config['network'],))
+    speedtestThread.start()
+
+    daemonThread.join()
+    for thread in snmpThreads:
+        thread.join()
+    speedtestThread.join()
+
+    logging.info("DONE")
+
+def configParser(configFile):
+    config = configparser.ConfigParser(strict=False)
+    config.read(configFile)
+    return {s:dict(config.items(s)) for s in config.sections()}
+
+
+def runSpeedtest(network):
     threads = 4
     logging.info("Running speedtest")
     st = speedtest.Speedtest()
@@ -27,70 +73,42 @@ def runSpeedtest(host):
         "url": results["share"],
     }
 
-    influx.writeSpeedtestMeasurement(host, results)
+    influx.writeSpeedtestMeasurement(network['network'], results)
 
-def speedtestDaemon(host):
+def speedtestDaemon(device):
     while True:
-        runSpeedtest(host)
+        runSpeedtest(device)
         time.sleep(30*60)
 
 
-def snmpMonitoring(host, community):
+def snmpMonitoring(device):
     while True:
         try:
-            results = snmp.getInterfaceData(host, community)
+            results = snmp.getInterfaceData(device['ip'], device['community'])
             for interface in results:
-                influx.writeInterfaceMeasurement(host, interface)
+                influx.writeInterfaceMeasurement(device['ip'], interface)
         except:
             pass
         time.sleep(1)
 
-
-def main():
-    logging.basicConfig(level=logging.INFO,
-                        format='%(asctime)s %(levelname)-8s %(message)s')
-    logging.info("START")
-
-    snmpThread = threading.Thread(target=snmpMonitoring, args=("10.10.0.1", "hidden_pub"))
-    snmpThread.start()
-
-    daemonThread = threading.Thread(target=loopDaemon, args=("enp4s4",))
-    daemonThread.start()
-
-    speedtestThread = threading.Thread(target=speedtestDaemon, args=("10.10.0.9",))
-    speedtestThread.start()
-
-    daemonThread.join()
-    snmpThread.join()
-    speedtestThread.join()
-
-    logging.info("DONE")
-
-def loopDaemon(interface):
+def loopDaemon(database, network):
     while True:
-        daemon(interface)
+        daemon(database, network)
         time.sleep(30)
 
-def daemon(interface):
-    dbConnectionInfo = {
-        'host': '10.10.0.9',
-        'port': '5433',
-        'dbname': 'netmonpi',
-        'user': 'postgres',
-        'password': 'MyikObi14hOS',
-        }
-    connStr = "dbname=%(dbname)s user=%(user)s host=%(host)s password='%(password)s' port=%(port)s" % dbConnectionInfo
+def daemon(database, network):
+    connStr = "dbname=%(dbname)s user=%(user)s host=%(host)s password='%(password)s' port=%(port)s" % database
     try:
         dbConn = psycopg2.connect(connStr)
         cursor = dbConn.cursor()
         logging.info("Connected to database [DB: {0}, host: {1}, port: {2}]".format(
-                                dbConnectionInfo['dbname'], dbConnectionInfo['host'], dbConnectionInfo['port']))
+                                database['dbname'], database['host'], database['port']))
     except Exception as e:
         logging.error("Connection to database failed")
         raise e
 
     try:
-        interface = Interface(interface)
+        interface = Interface(network['interface'])
     except Exception as e:
         logging.error("Error fetching interface data: {}".format(e))
         raise e
