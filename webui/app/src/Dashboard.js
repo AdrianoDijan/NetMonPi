@@ -2,12 +2,11 @@ import React from 'react'
 import './App.css';
 import ChartContainer from './components/InterfaceChartContainer'
 import DeviceTable from './components/DeviceTable';
-import MyNavbar from './components/NavBar'
-import Title from './components/Title'
+import NavBar from './components/NavBar'
 import Speedtest from './components/Speedtest'
 import StatusCard from './components/StatusCard'
 import { ThemeProvider } from '@material-ui/core/styles';
-import { Card, CardContent, CssBaseline, Grid, Container } from '@material-ui/core';
+import { CssBaseline, Grid, Container } from '@material-ui/core';
 import '@fontsource/poppins'
 import { darkTheme, lightTheme } from './themes'
 
@@ -32,7 +31,7 @@ class Dashboard extends React.Component {
       <ThemeProvider theme={this.state.useDark ? darkTheme() : lightTheme()}>
         <CssBaseline />
         <div>
-          <MyNavbar />
+          <NavBar />
           <Container maxWidth={false}>
             <Grid container spacing={3} justify={"center"} direction={"column"} alignItems="center">
               <Grid item container direction="row" justify="center" alignItems="stretch" spacing={3} xs={12} sm={12} md={10}>
@@ -43,29 +42,14 @@ class Dashboard extends React.Component {
                   <Speedtest />
                 </Grid>
               </Grid>
-
               <Grid item container xs={12} sm={12} md={10} justify={"center"} spacing={3} direction={"row"}>
                 <Grid item xs={12} sm={12} md={10}>
-                  <Card title={"WAN Bandwidth"}>
-                    <CardContent>
-                      <Title>
-                        WAN Bandwidth
-                    </Title>
-                      <ChartContainer />
-                    </CardContent>
-                  </Card>
+                  <ChartContainer/>
                 </Grid>
               </Grid>
               <Grid item container xs={12} sm={12} md={10} justify={"center"} spacing={3} direction={"row"}>
                 <Grid item xs={12} sm={12} md={10}>
-                  <Card title={"Online uređaji"}>
-                    <CardContent>
-                      <Title>
-                        Online uređaji
-                    </Title>
-                      <DeviceTable />
-                    </CardContent>
-                  </Card>
+                  <DeviceTable />
                 </Grid>
               </Grid>
             </Grid>

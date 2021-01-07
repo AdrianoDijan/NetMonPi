@@ -84,12 +84,36 @@ export default function darkTheme() {
                                 '& .MuiDataGrid-sortIcon': {
                                     color: "#d3d7db",
                                 },
+                                '& .MuiDataGrid-menuIconButton': {
+                                    color: "#d3d7db",
+                                },
                                 '& .MuiDataGrid-row': {
                                     cursor: "pointer"
-                                }
+                                },
+                                '& .MuiFormControl-root': {
+                                    color: "#d3d7db"
+                                },
+                                '& .MuiDataGrid-colCellTitleContainer': {
+                                    '& .MuiIconButton-root': {
+                                        color: "#d3d7db",
+                                    },
+                                },
                             },
                         },
-                    }
+                        MuiDataGridFilterForm: {
+                            root: {
+                                '& .MuiFormLabel-root': {
+                                    color: "#d3d7db",
+                                },
+                                '& .MuiIconButton-root': {
+                                    color: "#d3d7db",
+                                },
+                                '& .MuiSelect-icon': {
+                                    color: "#d3d7db",
+                                }
+                            }
+                        },
+                    },
                 }
             ))
     );

@@ -18,11 +18,11 @@ class StatusCard extends React.Component {
     }
 
     componentDidMount() {
-        fetch("http://localhost:3080/api/v1/info")
+        fetch("/api/v1/info")
         .then(response => response.json())
         .then((response) => this.setState({data: response}))
 
-        fetch("http://localhost:3080/api/v1/devices/online")
+        fetch("/api/v1/devices/online")
                 .then(res => res.json())
                 .then(res => this.setState({connected: res.length}))
     }

@@ -67,6 +67,7 @@ class ChartComponentClass extends Component {
                         },
                         ticks: {
                             autoSkip: true,
+                            autoSkipPadding: 3,
                             source: 'labels',
                         }
                     }],
@@ -93,8 +94,17 @@ class ChartComponentClass extends Component {
                 legend: {
                     display: false,
                     position: "right"
-                }
-            }
+                },
+            },
+            defaults: {
+                animation: {
+                    mode: {
+                        resize: {
+                            duration: 500,
+                        },
+                    },
+                },
+            },
         });
         this.setState({ chart: chartjsObj });
     }

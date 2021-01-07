@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dialog, DialogTitle, DialogContent, Grid, DialogActions, Button, Typography, Chip, Collapse, IconButton, Box } from '@material-ui/core';
+import { Dialog, DialogTitle, DialogContent, Grid, DialogActions, Button, Typography, Chip, Collapse, IconButton } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import { DataGrid } from '@material-ui/data-grid';
 import DevicesIcon from '@material-ui/icons/Devices';
@@ -51,7 +51,7 @@ class DeviceInfo extends React.Component {
 
   componentDidMount() {
     this.fetchData = () => {
-      fetch(`http://localhost:3080/api/v1/services/${this.props.rowData.row.mac}`)
+      fetch(`/api/v1/services/${this.props.rowData.row.mac}`)
         .then(response => response.json())
         .then(response => {
           if (response.length !== this.state.services.length) {
@@ -70,11 +70,12 @@ class DeviceInfo extends React.Component {
         .then((services) => {
           if (services) {
             for (let service of services) {
-              fetch(`http://localhost:3080/api/v1/exploits/${service.service_id}`)
+              fetch(`/api/v1/exploits/${service.service_id}`)
                 .then((response) => response.json())
                 .then((response) => { service.exploits = response })
                 .then(() => { this.setState({ services: services, servicesLoaded: true }) })
             }
+            this.setState({servicesLoaded: true})
           }
         })
     }
@@ -95,6 +96,7 @@ class DeviceInfo extends React.Component {
         onClose={this.props.handleClose}
         aria-labelledby="device-info"
         scroll="body"
+        style={{zIndex: '150 !important'}}
       >
         <DialogTitle id="max-width-dialog-title">
           <Grid item container direction={'row'} justify="space-between">
@@ -145,6 +147,18 @@ class DeviceInfo extends React.Component {
                   </Typography>
                 </Grid>
               </Grid>
+              <Grid item container direction={'row'} justify="space-between" >
+                <Grid item>
+                  <Typography display='inline' variant='h6'>
+                    Vendor
+                  </Typography>
+                </Grid>
+                <Grid item>
+                  <Typography display='inline' variant='h6'>
+                    {this.props.rowData.row.vendor}
+                  </Typography>
+                </Grid>
+              </Grid>
               <Typography variant="h6">
                 &nbsp;
               </Typography>
@@ -180,7 +194,7 @@ class DeviceInfo extends React.Component {
                   <Grid container direction="column" spacing={1}>
                     <Grid item container direction="row">
                       <Grid item xs>
-                        <Typography><Box fontWeight="fontWeightBold">CVE Broj</Box></Typography>
+                        <Typography>CVE Broj</Typography>
                       </Grid>
                       <Grid item>
                         {this.state.selectedExploit ? this.state.selectedExploit.cve_number : null}
@@ -188,7 +202,7 @@ class DeviceInfo extends React.Component {
                     </Grid>
                     <Grid item container direction="row">
                       <Grid item xs>
-                        <Typography><Box fontWeight="fontWeightBold">Razina opasnosti</Box></Typography>
+                        <Typography>Razina opasnosti</Typography>
                       </Grid>
                       <Grid item>
                         {this.state.selectedExploit ? this.state.selectedExploit.base_score : null}
@@ -196,7 +210,7 @@ class DeviceInfo extends React.Component {
                     </Grid>
                     <Grid item container direction="row">
                       <Grid item xs>
-                        <Typography><Box fontWeight="fontWeightBold">Opis</Box></Typography>
+                        <Typography>Opis</Typography>
                       </Grid>
                       <Grid item>
                         {this.state.selectedExploit ? this.state.selectedExploit.description : null}

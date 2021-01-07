@@ -17,7 +17,7 @@ class Speedtest extends React.Component {
 
     componentDidMount() {
         this.fetchData = () => {
-            fetch('http://localhost:3080/api/v1/speedtest/last')
+            fetch('/api/v1/speedtest/last')
                 .then(res => res.json())
                 .then(res => {
                     moment.locale('hr')
@@ -32,7 +32,11 @@ class Speedtest extends React.Component {
                 .catch(err => console.log(err.message))
         }
         this.fetchData()
-        setInterval(this.fetchData, 10000)
+        this.interval = setInterval(this.fetchData, 10000)
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.interval);
     }
 
     render() {

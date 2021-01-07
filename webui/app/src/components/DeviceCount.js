@@ -13,7 +13,7 @@ class DeviceCount extends React.Component {
 
     componentDidMount() {
         this.fetchData = () => {
-            fetch("http://localhost:3080/api/v1/devices/online")
+            fetch("/api/v1/devices/online")
                 .then(res => res.json())
                 .then(res => {
                     this.setState({ count: res.length, isLoaded: true });
