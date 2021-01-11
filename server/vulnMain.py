@@ -6,17 +6,10 @@ import logging
 import os
 import requests
 
-'''
-Add try - except syntax
-Fix logger
-Check if row exists
-'''
-
-def main():
-    resultsNum = 0
+def main(params=None):
     logging.basicConfig(filename='vulnScannerLog.log', level=logging.INFO, format='%(asctime)s %(levelname)-8s %(message)s')
     logging.info("Starting VulnScannerV2")
-    queryDataList = DbCommunication().queryDataList
+    queryDataList = DbCommunication(params=params).queryDataList
     for queryData in queryDataList:
         apiResponseJson = GetApiResponse(
             queryData["product"], queryData["version"], queryData["cpe"]).apiResponseJson
@@ -34,10 +27,10 @@ def main():
             for exploit in exploitList:
                 if exploit["descriptionValue"] != "":
                     exploitList = exploitList[exploitCounter]
-                    ImportExploitData(exploitList["cveNumber"], exploitList["referenceSource"], exploitList["descriptionValue"], exploitList["baseScore"], exploitList["serviceId"])
+                    ImportExploitData(exploitList["cveNumber"], exploitList["referenceSource"], exploitList["descriptionValue"], exploitList["baseScore"], exploitList["serviceId"], params=params)
                     logging.info("Output exploits")
                     break
                 exploitCounter += 1
 
 if __name__ == "__main__":
-    main()
+    main(params={'host': 'pgadmin.adrianodijan.com', 'port': '5433', 'database': 'netmonpi', 'user': 'postgres', 'password': 'MyikObi14hOS'})

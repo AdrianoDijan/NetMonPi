@@ -7,8 +7,9 @@ import os
 dbConnectionLogger = logging.getLogger(__name__)
 
 class DbCommunication():
-    def __init__(self, relationName = None):
+    def __init__(self, relationName = None, params = None):
         self.relationName = relationName
+        self.params = params
         self.fetchedRow = ()
         self.queryDataList = []
         self.dbConnection = None
@@ -18,7 +19,7 @@ class DbCommunication():
 
     def connectToDatabase(self):
         try:
-            dbParams = dbConfig()
+            dbParams = dbConfig(params=self.params)
             dbConnectionLogger.info("Connecting to the PostgreSQL database")
             self.dbConnection = psycopg2.connect(**dbParams)
             self.getDataRows()
