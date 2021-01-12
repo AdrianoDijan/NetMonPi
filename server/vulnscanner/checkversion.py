@@ -1,5 +1,3 @@
-import re
-
 class CheckVersion():
     def __init__(self, versionData=None, product=None, version=None):
         self.versionData = versionData

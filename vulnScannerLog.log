@@ -1,0 +1,42 @@
+2021-01-11 11:37:26,964 INFO     Starting VulnScannerV2
+2021-01-11 11:45:52,159 INFO     Starting VulnScannerV2
+2021-01-11 11:45:52,161 INFO     Connection error: 'NoneType' object has no attribute 'as_dict'
+2021-01-11 11:46:13,562 INFO     Starting VulnScannerV2
+2021-01-11 11:46:28,274 INFO     Connection error: 'NoneType' object has no attribute 'as_dict'
+2021-01-11 11:48:21,545 INFO     Starting VulnScannerV2
+2021-01-11 11:48:41,280 INFO     Starting VulnScannerV2
+2021-01-11 11:49:01,002 INFO     Starting VulnScannerV2
+2021-01-11 11:49:16,061 INFO     Starting VulnScannerV2
+2021-01-11 11:51:29,860 INFO     Starting VulnScannerV2
+2021-01-11 11:51:50,452 INFO     Connecting to the PostgreSQL database
+2021-01-11 14:16:40,665 INFO     Starting VulnScannerV2
+2021-01-11 14:16:51,727 INFO     Connecting to the PostgreSQL database
+2021-01-11 14:18:12,713 INFO     Connection error: 'NoneType' object is not subscriptable
+2021-01-11 14:18:13,943 INFO     Database connection closed.
+2021-01-11 14:18:20,020 INFO     GetApiResponse __init__, args: ['nginx', '1.16.1', 'cpe:2.3:a:igor_sysoev:nginx:1.16.1']
+2021-01-11 14:18:20,021 INFO     Searching by product name: nginx
+2021-01-11 14:18:20,021 INFO     Adding product version to search: 1.16.1
+2021-01-11 14:18:22,033 INFO     Searching by cpe23uri: cpe:2.3:a:igor_sysoev:nginx:1.16.1
+2021-01-11 14:18:38,827 INFO     Retrieved exploits sorting by base score
+2021-01-11 14:18:45,070 INFO     Getting 3 best exploits
+2021-01-11 14:18:47,725 INFO     GetApiResponse __init__, args: ['Microsoft Windows RPC', '', 'cpe:2.3:o:microsoft:windows']
+2021-01-11 14:18:50,939 INFO     Retrieved exploits sorting by base score
+2021-01-11 14:18:51,889 INFO     Getting 3 best exploits
+2021-01-11 14:19:05,781 INFO     Starting VulnScannerV2
+2021-01-11 14:19:06,078 INFO     Connecting to the PostgreSQL database
+2021-01-11 14:19:06,548 INFO     Database connection closed.
+2021-01-11 14:19:08,232 INFO     GetApiResponse __init__, args: ['OpenSSH', '7.9p1 Raspbian 10+de', 'cpe:2.3:o:linux:linux_kernel']
+2021-01-11 14:19:08,232 INFO     Searching by product name: OpenSSH
+2021-01-11 14:19:08,233 INFO     Adding product version to search: 7.9p1 Raspbian 10+de
+2021-01-11 14:19:25,159 INFO     Searching by product name: OpenSSH
+2021-01-11 14:19:25,159 INFO     Adding product version to search: 7.9p1 Raspbian
+2021-01-11 14:19:42,483 INFO     Starting VulnScannerV2
+2021-01-11 14:19:42,808 INFO     Connecting to the PostgreSQL database
+2021-01-11 14:19:43,261 INFO     Database connection closed.
+2021-01-11 14:19:45,561 INFO     GetApiResponse __init__, args: ['OpenSSH', '7.9p1 Raspbian 10+de', 'cpe:2.3:o:linux:linux_kernel']
+2021-01-11 14:19:45,561 INFO     Searching by product name: OpenSSH
+2021-01-11 14:19:45,562 INFO     Adding product version to search: 7.9p1 Raspbian 10+de
+2021-01-11 14:20:03,041 INFO     Searching by product name: OpenSSH
+2021-01-11 14:20:03,041 INFO     Adding product version to search: 7.9p1 Raspbian
+2021-01-11 14:20:04,008 INFO     Searching by product name: OpenSSH
+2021-01-11 14:20:04,008 INFO     Adding product version to search: 7.9p1
