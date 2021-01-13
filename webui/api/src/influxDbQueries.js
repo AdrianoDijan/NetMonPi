@@ -33,7 +33,7 @@ module.exports = {
                      WHERE time >= ${startTime.getTime()*1000000} AND time <= ${endTime.getTime()*1000000}
                      AND "host"=${Influx.escape.stringLit(host)}
                      AND "interface"='${interface}'
-                     group by time(${interval}m/150)
+                     group by time(${interval}m/200)
                     `
         influx.query(query)
             .then(result => response.status(200).json(result))
@@ -48,7 +48,7 @@ module.exports = {
                      WHERE time > now()-${time} 
                      AND "host"=${Influx.escape.stringLit(host)}
                      AND "interface"='${interface}'
-                     group by time(${time}/150)
+                     group by time(${time}/200)
                     `
         influx.query(query)
             .then(result => response.status(200).json(result))

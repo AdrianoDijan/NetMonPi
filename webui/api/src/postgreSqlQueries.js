@@ -43,7 +43,22 @@ module.exports = {
             if (error) {
                 throw error
             }
-            response.status(200).json(results.rows)
+            for (let i = 0; i < results.rows.length; i++) {
+                pool.query(`SELECT * 
+                    FROM exploit 
+                    WHERE exploit_id IN 
+                    (SELECT exploit_id 
+                    FROM serviceexploit
+                    WHERE service_id = $1)`, [results.rows[i].service_id], (error, resultsExploit) => {
+                    if (error) {
+                        throw error
+                    }
+                    results.rows[i].exploits = resultsExploit.rows || []
+                    if (i === results.rows.length - 1) {
+                        response.status(200).json(results.rows)
+                    }
+                })
+            }
         })
     },
     getExploitsByService: (request, response) => {

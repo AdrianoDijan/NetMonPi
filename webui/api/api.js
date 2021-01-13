@@ -4,8 +4,8 @@ const cors = require('cors')
 const bodyParser = require('body-parser');
 
 const app = express();
-const influxQueries = require('./components/influxDbQueries')
-const pgQueries = require('./components/postgreSqlQueries')
+const influxQueries = require('./src/influxDbQueries')
+const pgQueries = require('./src/postgreSqlQueries')
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
