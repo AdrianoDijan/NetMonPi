@@ -1,6 +1,11 @@
-from netscanner.host import Host
-from netscanner.network import Network, Interface
+from netscanner.network import Interface
 from snmpmonitor import snmp, influx
+
+from vulnscanner.getcvedata import GetCveData
+from vulnscanner.getapiresponse import GetApiResponse
+from vulnscanner.dbcommunicator import DbCommunication
+from vulnscanner.importexploitdata import ImportExploitData
+
 import sys
 import logging
 import json
@@ -92,9 +97,13 @@ def snmpMonitoring(device):
         time.sleep(1)
 
 def loopDaemon(database, network):
+    vulnScannerCount = 0
     while True:
         daemon(database, network)
         time.sleep(30)
+        if not vulnScannerCount%5:
+            vulnScanner(database)
+        vulnScannerCount+=1
 
 def daemon(database, network):
     connStr = "dbname=%(dbname)s user=%(user)s host=%(host)s password='%(password)s' port=%(port)s" % database
@@ -141,6 +150,8 @@ def daemon(database, network):
     for thread in threadPool:
         thread.join()
 
+    hostsRescanned = False
+
     def manageHost(host):
         with dbConn.cursor() as cursor:
             query = """
@@ -184,6 +195,7 @@ def daemon(database, network):
                         WHERE mac = %(mac)s
                         """
                     cursor.execute(query, queryValues)
+                    hostsRescanned = True
 
                 if ip != host.as_dict()['ip']:
                     logging.info("IP address changed, updating ({} -> {}".format(ip, host.as_dict()['ip']))
@@ -274,6 +286,33 @@ def daemon(database, network):
         thread.join()
             
     dbConn.close()
+
+    logging.info("Running vulnscanner")
+
+def vulnScanner(params=None):
+    logging.info("Starting VulnScannerV2")
+    queryDataList = DbCommunication(params=params).queryDataList
+    for queryData in queryDataList:
+        apiResponseJson = GetApiResponse(
+            queryData["product"], queryData["version"], queryData["cpe"]).apiResponseJson
+        exploitList = []
+        if apiResponseJson != None and apiResponseJson.get("result") != None:
+            if "CVE_Items" in apiResponseJson.get("result"):
+                for cveItem in apiResponseJson.get("result").get("CVE_Items"):
+                    exploitList.append(GetCveData(cveItem, queryData["serviceId"], queryData["product"], queryData["version"]).exploitDict)
+        logging.info("Retrieved exploits sorting by base score")
+        exploitList = sorted(
+            filter(None, exploitList), key=lambda k: k['baseScore'], reverse=True)
+        logging.info("Getting 3 best exploits")
+        if exploitList:
+            exploitCounter = 0
+            for exploit in exploitList:
+                if exploit["descriptionValue"] != "":
+                    exploitList = exploitList[exploitCounter]
+                    ImportExploitData(exploitList["cveNumber"], exploitList["referenceSource"], exploitList["descriptionValue"], exploitList["baseScore"], exploitList["serviceId"], params=params)
+                    logging.info("Output exploits")
+                    break
+                exploitCounter += 1
 
 if __name__ == '__main__':
     main()
