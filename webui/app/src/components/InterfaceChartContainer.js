@@ -2,6 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import ChartComponent from './InterfaceChartComponent';
 import { Grid, Card, CardContent, ButtonGroup, Button } from '@material-ui/core';
+import 'chartjs-adapter-moment';
 import Title from './Title';
 
 class ChartContainer extends React.Component {
@@ -9,11 +10,9 @@ class ChartContainer extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            txData: [],
-            rxData: [],
-            chartLabels: [],
-            fetchUrl: '/api/v1/bandwidth/today',
-            selectedButton: 'today'
+            data: [],
+            fetchUrl: '/api/v1/bandwidth/last/24h',
+            selectedButton: '24h'
         };
     };
 
@@ -21,23 +20,15 @@ class ChartContainer extends React.Component {
         this.fetchData = () => {
             fetch(this.state.fetchUrl)
                 .then(response => response.json())
-                .then(data => {
-                    let txOctets = [];
-                    let rxOctets = [];
-                    let labels = [];
-
-                    for (let i = 0; i < data.length; i++) {
-                        txOctets.push(data[i]['txInOctets'])
-                        rxOctets.push(data[i]['txOutOctets'])
-                        labels.push(data[i]['time'])
-                    }
-
-                    txOctets = txOctets.map(x => { return (x / 1000000).toFixed(2) });
-                    rxOctets = rxOctets.map(x => { return -1 * (x / 1000000).toFixed(2) })
-                    labels = labels.map(x => { return moment(x) });
-
-                    this.setState({ txData: txOctets, rxData: rxOctets, chartLabels: labels });
-                });
+                .then(data => 
+                    data.map(x => (
+                        {
+                            txInOctets: (x['txInOctets'] / 1000000).toFixed(2),
+                            txOutOctets: (x['txOutOctets'] / -1000000).toFixed(2),
+                            time: moment(x['time'])
+                        }))
+                )
+                .then(data => {this.setState({data: data})});
         }
         this.fetchData()
         this.intervalHandler = setInterval(this.fetchData, 2000);
@@ -48,7 +39,6 @@ class ChartContainer extends React.Component {
     }
 
     render() {
-        const { txData, rxData, chartLabels } = this.state;
         return (
             <Card title={"WAN Bandwidth"}>
                 <CardContent>
@@ -59,7 +49,7 @@ class ChartContainer extends React.Component {
                             </Title>
                         </Grid>
                         <Grid item>
-                            <ButtonGroup variant='outlined'>
+                            <ButtonGroup>
                                 <Button variant={this.state.selectedButton ==='today' ? "contained" : 'outlined'}
                                         onClick={() => {this.setState({selectedButton: 'today', fetchUrl: '/api/v1/bandwidth/today'}); this.fetchData()}}>
                                     Today
@@ -75,7 +65,7 @@ class ChartContainer extends React.Component {
                             </ButtonGroup>
                         </Grid>
                     </Grid>
-                    <ChartComponent txData={txData} rxData={rxData} chartLabels={chartLabels} />
+                    <ChartComponent data={this.state.data}/>
                 </CardContent>
             </Card>
         );

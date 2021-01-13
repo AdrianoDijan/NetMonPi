@@ -6,6 +6,7 @@ export default function darkTheme() {
             createMuiTheme(
                 {
                     palette: {
+                        type: 'dark',
                         primary: {
                             main: '#2a8bf4',
                             chartTitle: '#43464a',
@@ -25,14 +26,14 @@ export default function darkTheme() {
                     root: {
                         position: 'fixed',
                         width: '100%',
-                        height: '100%',
+                        height: 'calc(100vw - 1px)',
                         minHeight: "100vh",
                         left: 0,
                         top: 0,
-                        zIndex: 10,
+                        overflow: 'scroll'
                     },
                     body: {
-                        overflow: "hidden"
+                        overflow: 'scroll'
                     },
                     menuButton: {
                         marginRight: 36,
@@ -78,6 +79,9 @@ export default function darkTheme() {
                         MuiDataGrid: {
                             root: {
                                 border: "none",
+                                '& .MuiDataGrid-cell': {
+                                    borderBottom: '1px solid rgba(255,255,255,0.2)'
+                                },
                                 '& .MuiDataGrid-columnSeparator': {
                                     color: "rgba(0,0,0,0)",
                                 },

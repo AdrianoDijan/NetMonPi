@@ -5,7 +5,7 @@ import {
   Route,
 } from "react-router-dom";
 import Dashboard from './Dashboard'
-import Login from './components/login'
+import Login from './components/Login'
 import './App.css';
 
 

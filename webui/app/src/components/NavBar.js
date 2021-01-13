@@ -1,11 +1,25 @@
 import React from 'react';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
+import { AppBar, Toolbar, Typography, IconButton } from '@material-ui/core';
 import NetworkCheckIcon from '@material-ui/icons/NetworkCheck';
+import BrightnessAutoIcon from '@material-ui/icons/BrightnessAuto';
+import Brightness4Icon from '@material-ui/icons/Brightness4';
+import BrightnessHighIcon from '@material-ui/icons/BrightnessHigh';
+import SettingsIcon from '@material-ui/icons/Settings';
 
 export default class NavBar extends React.Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      currentTheme: this.props.currentTheme,
+      brightnessIcon: this.props.currentTheme === 'auto' ? <BrightnessAutoIcon /> : this.props.currentTheme === 'dark' ? <Brightness4Icon /> : <BrightnessHighIcon />,
+    }
+  }
+
+  componentDidUpdate(prevProps, prevContext) {
+    if (this.state.currentTheme !== this.props.currentTheme) {
+      this.setState({currentTheme: this.props.currentTheme})
+    } 
+  }
 
   render() {
     return (
@@ -16,8 +30,12 @@ export default class NavBar extends React.Component {
             <Typography variant="h6" style={{ flexGrow: 1 }}>
               NetMonPi
               </Typography>
-            <Button color="inherit">Login</Button>
-            <Button color="inherit">Register</Button>
+            <IconButton color="inherit" onClick={() => {this.props.parentStateHandler()}}>
+              {this.state.currentTheme === 'auto' ? <BrightnessAutoIcon /> : this.state.currentTheme === 'dark' ? <Brightness4Icon /> : <BrightnessHighIcon />}
+            </IconButton>
+            <IconButton color="inherit" onClick={() => {this.props.handleSettingsButton()}}>
+              <SettingsIcon />
+            </IconButton>
           </Toolbar>
         </AppBar>
         <Toolbar/>

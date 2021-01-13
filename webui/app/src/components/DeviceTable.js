@@ -34,18 +34,16 @@ class DeviceTable extends React.Component {
     componentDidMount() {
         this.fetchData = () => {
             fetch("/api/v1/devices/online")
-                .then(res => res.json())
-                .then(res => {
-                    let d1 = [];
-                    for (let i = 0; i < res.length; i++) {
-                        d1[i] = res[i];
-                        d1[i]['id'] = i;
-                        d1[i]['first_seen'] = moment(d1[i]['first_seen']).toDate()
-                        d1[i]['last_seen'] = moment(d1[i]['last_seen']).toDate()
-                    }
-                    this.setState({ data: d1, isLoaded: true });
+                .then(response => response.json())
+                .then(response => response.map(x => {
+                    x['first_seen'] = moment(x['first_seen']).toDate()
+                    x['last_seen'] = moment(x['last_seen']).toDate()
+                    x['id'] = x['mac']
+                    return x;
                 })
-                .catch(err => console.log(err.message))
+                )
+                .then(response => { this.setState({ data: response, isLoaded: true }) })
+                .catch(error => console.log(error.message))
         }
         this.fetchData()
         this.interval = setInterval(this.fetchData, 10000)
@@ -63,8 +61,8 @@ class DeviceTable extends React.Component {
                         <Title>
                             Online uređaji
                         </Title>
-                        <div id="deviceTable" style={{ height: 600, width: '100%', padding: "1%" }}>
-                            <DataGrid sortModel={[{ field: 'ip', sort: 'asc' }]} onRowClick={(RowParams => { this.setState({ selectedDevice: RowParams, dialogOpen: true }) })} rows={this.state.data} columns={this.columns} autoPageSize={true} disableClickEventBubbling={true} disableSelectionOnClick={true} loading={!this.state.isLoaded} />
+                        <div style={{ height: 600, width: '100%' }}>
+                            <DataGrid sortModel={[{ field: 'ip', sort: 'asc' }]} onRowClick={(RowParams => { this.setState({ selectedDevice: RowParams, dialogOpen: true }) })} rows={this.state.data} columns={this.columns} autoPageSize={true} disableSelectionOnClick={true} loading={!this.state.isLoaded} />
                             <DeviceInfo open={this.state.dialogOpen} rowData={this.state.selectedDevice} handleClose={() => this.setState({ dialogOpen: false })} />
                         </div>
                     </CardContent>
@@ -78,8 +76,8 @@ class DeviceTable extends React.Component {
                         <Title>
                             Online uređaji
                         </Title>
-                        <div id="deviceTable" style={{ height: 600, width: '100%', padding: "1%" }}>
-                            <DataGrid sortModel={[{ field: 'ip', sort: 'asc' }]} onRowClick={(RowParams => { this.setState({ selectedDevice: RowParams, dialogOpen: true }) })} rows={this.state.data} columns={this.columns} autoPageSize={true} disableClickEventBubbling={true} disableSelectionOnClick={true} loading={!this.state.isLoaded} />
+                        <div style={{ height: 600, width: '100%' }}>
+                            <DataGrid sortModel={[{ field: 'ip', sort: 'asc' }]} onRowClick={(RowParams => { this.setState({ selectedDevice: RowParams, dialogOpen: true }) })} rows={this.state.data} columns={this.columns} autoPageSize={true} disableSelectionOnClick={true} loading={!this.state.isLoaded} />
                         </div>
                     </CardContent>
                 </Card>

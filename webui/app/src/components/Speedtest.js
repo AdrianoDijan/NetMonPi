@@ -97,10 +97,10 @@ class Speedtest extends React.Component {
                     </Grid>
                 </CardContent>
                 <CardActions>
-                    <Button color='inherit' size='small' endIcon={<LaunchIcon/>} onClick={() => { this.setState({dialogOpen: true}) }}>
+                    <Button color='inherit' size='small' endIcon={<LaunchIcon />} onClick={() => { this.setState({ dialogOpen: true }) }}>
                         Prikaži rezultate
                     </Button>
-                    <TableDialog open={this.state.dialogOpen} url={this.state.data["url"]} maxWidth={'sm'} handleClose={() => {this.setState({dialogOpen: false})}}/>
+                    <TableDialog open={this.state.dialogOpen} url={this.state.data["url"]} maxWidth={'sm'} handleClose={() => { this.setState({ dialogOpen: false }) }} />
                 </CardActions>
             </Card >
         )
@@ -117,10 +117,15 @@ class TableDialog extends React.Component {
                 onClose={this.props.handleClose}
                 aria-labelledby="max-width-dialog-title"
                 scroll="body"
+                PaperProps={{
+                    style: {
+                        background: 'none'
+                    }
+                }}
             >
-                        <a href={this.props.url} target="_blank" rel="noreferrer">
-                        <img alt="Results" width="100%" src={this.props.url + ".png"}/>
-                        </a>
+                <a href={this.props.url} target="_blank" rel="noreferrer">
+                    <img alt="Results" width="100%" src={this.props.url + ".png"} />
+                </a>
             </Dialog>
         )
     }

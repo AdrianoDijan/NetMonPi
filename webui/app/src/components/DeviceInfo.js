@@ -4,10 +4,7 @@ import Alert from '@material-ui/lab/Alert';
 import { DataGrid } from '@material-ui/data-grid';
 import DevicesIcon from '@material-ui/icons/Devices';
 import Title from './Title';
-import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
-import HighlightOffIcon from '@material-ui/icons/HighlightOff';
-import CloseIcon from '@material-ui/icons/Close';
-import OpenInNewIcon from '@material-ui/icons/OpenInNew';
+import { ErrorOutline as ErrorOutlineIcon, HighlightOff as HighlightOffIcon, Close as CloseIcon, OpenInNew as OpenInNewIcon} from '@material-ui/icons';
 
 class DeviceInfo extends React.Component {
   constructor(props) {
@@ -36,11 +33,9 @@ class DeviceInfo extends React.Component {
                         style={exploit.base_score < 5 ? { backgroundColor: 'orange' } : { backgroundColor: 'red' }}
                         icon={exploit.base_score < 5 ? <ErrorOutlineIcon fontSize="small" /> : <HighlightOffIcon fontSize="small" />}
                       />
-
                     </Grid>
                   )
-                }
-                ) : null
+                }) : null
               }
             </Grid>
           )
@@ -69,14 +64,9 @@ class DeviceInfo extends React.Component {
         })
         .then((services) => {
           if (services) {
-            for (let service of services) {
-              fetch(`/api/v1/exploits/${service.service_id}`)
-                .then((response) => response.json())
-                .then((response) => { service.exploits = response })
-                .then(() => { this.setState({ services: services, servicesLoaded: true }) })
-            }
-            this.setState({servicesLoaded: true})
+            this.setState({ services: services })
           }
+          this.setState({  servicesLoaded: true })
         })
     }
     this.fetchData()
@@ -96,9 +86,9 @@ class DeviceInfo extends React.Component {
         onClose={this.props.handleClose}
         aria-labelledby="device-info"
         scroll="body"
-        style={{zIndex: '150 !important'}}
+        style={{ zIndex: '150 !important', marginTop: '50px'}}
       >
-        <DialogTitle id="max-width-dialog-title">
+        <DialogTitle>
           <Grid item container direction={'row'} justify="space-between">
             <Grid item xs>
               <Title> Informacije o uređaju </Title>
@@ -165,15 +155,14 @@ class DeviceInfo extends React.Component {
               <Typography variant="h5">
                 Otvoreni portovi
               </Typography>
-
-              <div style={{ height: 200 + this.state.services.length * 20, width: '100%', padding: "1%" }}>
-                <DataGrid rows={this.state.services}
-                  columns={this.columns}
-                  autoPageSize={true}
-                  disableClickEventBubbling={true}
-                  disableSelectionOnClick={true}
-                  loading={!this.state.servicesLoaded}
-                />
+              <div style={{ width: '100%', height: 300 }}>
+                  <DataGrid rows={this.state.services}
+                    columns={this.columns}
+                    autoPageSize={true}
+                    disableSelectionOnClick={true}
+                    loading={!this.state.servicesLoaded}
+                    disableColumnFilter
+                  />
               </div>
               <Collapse in={Boolean(this.state.selectedExploit)}>
                 <Alert
