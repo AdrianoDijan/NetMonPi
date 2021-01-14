@@ -95,8 +95,8 @@ class Dashboard extends React.Component {
               if (reason === 'clickaway') {
                 return;
               }
-              this.setState({ showThemeSnackbar: false })
-            }} onClose={() => { this.setState({ themeSnackbarMessage: '' }) }}>
+              this.setState({ showThemeSnackbar: false, themeSnackbarMessage: '' })
+            }}>
               {this.state.themeSnackbarMessage}
             </Alert>
           </Snackbar>

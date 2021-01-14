@@ -175,7 +175,7 @@ def daemon(database, network):
                 logging.info("Updating last seen field")
                 query = """
                         UPDATE host
-                        SET last_seen = %(timestamp)s
+                        SET last_seen = %(timestamp)s, hostname = %(hostname)s
                         WHERE mac = %(mac)s
                         """
                 queryValues = host.as_dict()
@@ -287,7 +287,8 @@ def daemon(database, network):
             
     dbConn.close()
 
-    logging.info("Running vulnscanner")
+    # logging.info("Running vulnscanner")
+    # vulnScanner(database)
 
 def vulnScanner(params=None):
     logging.info("Starting VulnScannerV2")

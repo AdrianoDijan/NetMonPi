@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tabs, Tab, Dialog, DialogContent, DialogActions, Grid, Button } from '@material-ui/core'
+import {Tab, Dialog, DialogContent, DialogActions, Grid, Button } from '@material-ui/core'
 import TabContext from '@material-ui/lab/TabContext';
 import TabList from '@material-ui/lab/TabList';
 import TabPanel from '@material-ui/lab/TabPanel';

@@ -14,6 +14,7 @@ class Login extends React.Component {
       username: '',
       password: '',
       alertOpen: false,
+      alertMessage: ''
     }
     this.handleSubmit = this.handleSubmit.bind(this);
 
@@ -28,13 +29,26 @@ class Login extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    if (this.state.username && this.state.password) {
-      this.props.history.push("/dashboard");
-    } else {
-      this.setState({ alertOpen: true })
-      setTimeout(() => {this.setState({alertOpen: false})}, 2000)
-      
-    }
+    fetch('/api/v1/login', 
+        {
+          method: 'POST',
+          body: JSON.stringify(this.state),
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+        }
+        )
+    .then(response => {
+      if (response.status === 200) {
+        this.props.history.push("/dashboard")
+        console.log(response)
+      } else {
+        this.setState({ alertOpen: true, alertMessage: response.json()['message'] })
+        setTimeout(() => {this.setState({alertOpen: false})}, 2000)
+      }
+    })
+    
   }
 
   render() {
@@ -59,7 +73,7 @@ class Login extends React.Component {
                   <Grid item>
                     <Collapse in={this.state.alertOpen}>
                       <Alert severity="error">
-                        Wrong username or password!
+                        {this.state.alertMessage}
                       </Alert>
                       &nbsp;
                     </Collapse>

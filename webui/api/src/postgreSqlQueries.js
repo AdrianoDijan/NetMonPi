@@ -1,6 +1,7 @@
 const pg = require('pg')
 const axios = require('axios')
 const publicIp = require('public-ip')
+const bcrypt = require('bcrypt')
 
 const pool = new pg.Pool({
     user: 'postgres',
@@ -106,5 +107,55 @@ module.exports = {
                         });
                 });
         });
+    },
+    login: (request, response) => {
+        let { username, password } = request.body;
+
+        pool.query(`
+            SELECT * 
+            FROM users
+            WHERE username = $1
+        `, [username], (error, results) => {
+            if (error) {
+                throw error
+            }
+            if (results.rows[0]) {
+                bcrypt.compare(password, results.rows[0].password, (error, same) => {
+                    if (same) {
+                        response.status(200).send("Success!")
+                    }
+                    else {
+                        response.status(500).json({message: "Wrong password!"})
+                    }
+                })
+            } else {
+                response.status(500).json({message: "User not found!"})
+            }
+        })
+    },
+    register: (request, response) => {
+        const saltRounds = 10;
+        let { username, password } = request.body;
+
+        bcrypt.hash(password, saltRounds, (error, hashedPassword) => {
+            if (error) {
+                throw (error)
+            }
+            else {
+                password = hashedPassword
+            }
+        })
+
+        pool.query(`
+            INSERT INTO users (username, password)
+            VALUES ('${username}', '${password}')
+        `, (error, results) => {
+            if (error) {
+                response.status(500).send(error)
+            }
+            else {
+                response.status(200).send("User created successfully!")
+            }
+        })
     },
 }

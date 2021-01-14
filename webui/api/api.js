@@ -30,6 +30,10 @@ app.get('/api/v1/services/:mac', pgQueries.getServicesByMac)
 app.get('/api/v1/exploits/:serviceid', pgQueries.getExploitsByService)
 app.get('/api/v1/info', pgQueries.getNetworkInfo)
 
+app.post('/api/v1/login', pgQueries.login)
+app.post('/api/v1/register', pgQueries.register)
+
+
 app.get('*', (req,res) => {
     res.sendFile(path.join(__dirname, '../app/build/index.html'));
 });
