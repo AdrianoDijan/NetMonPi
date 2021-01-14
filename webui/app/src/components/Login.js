@@ -42,13 +42,19 @@ class Login extends React.Component {
     .then(response => {
       if (response.status === 200) {
         this.props.history.push("/dashboard")
-        console.log(response)
-      } else {
-        this.setState({ alertOpen: true, alertMessage: response.json()['message'] })
-        setTimeout(() => {this.setState({alertOpen: false})}, 2000)
+      } else  if (response.status === 404) {
+        this.setState({ alertOpen: true, alertMessage: "User not found!" })
+        this.alertTimeout = setTimeout(() => {this.setState({alertOpen: false})}, 5000)
+      } else if (response.status === 401) {
+        this.setState({alertOpen: true, alertMessage: "Wrong password!"})
+        this.alertTimeout = setTimeout(() => {this.setState({alerOpen: false})}, 5000)
       }
     })
-    
+    .catch(error => {const mute = error})
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.alertTimeout)
   }
 
   render() {

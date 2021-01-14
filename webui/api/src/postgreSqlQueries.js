@@ -2,6 +2,7 @@ const pg = require('pg')
 const axios = require('axios')
 const publicIp = require('public-ip')
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 
 const pool = new pg.Pool({
     user: 'postgres',
@@ -10,6 +11,8 @@ const pool = new pg.Pool({
     password: 'MyikObi14hOS',
     port: 5433,
 })
+
+const secret = "wX65FYILUZOFSi9C7UhcL7ke6tRyx9wbMbTQy3p+ZXI0ymAOnyIPkhqIVwaleYnwO2aDn39beLplRsO67Ejl+n7And39vgbZ71gEK/C48Tr2Od5nBHWD6RCtxTGbxoxoeV/JsyHb+qMrgA9EmmDKEeHVbubbp+HVlC3/x5+AHWJU40abE1ykX4jSw7AsLk5035XIsIhfRTDWc3kEmY7XMyCmwGdYYpk3srFQFQ=="
 
 module.exports = {
     getAllDevices: (request, response) => {
@@ -122,14 +125,18 @@ module.exports = {
             if (results.rows[0]) {
                 bcrypt.compare(password, results.rows[0].password, (error, same) => {
                     if (same) {
-                        response.status(200).send("Success!")
+                        const payload = { username };
+                        const token = jwt.sign(payload, secret, {
+                            expiresIn: '24h'
+                        });
+                        response.cookie('token', token, { httpOnly: true }).sendStatus(200);
                     }
                     else {
-                        response.status(500).json({message: "Wrong password!"})
+                        response.status(401).json({ message: "Wrong password!" })
                     }
                 })
             } else {
-                response.status(500).json({message: "User not found!"})
+                response.status(404).json({ message: "User not found!" })
             }
         })
     },
@@ -142,19 +149,18 @@ module.exports = {
                 throw (error)
             }
             else {
-                password = hashedPassword
-            }
-        })
-
-        pool.query(`
-            INSERT INTO users (username, password)
-            VALUES ('${username}', '${password}')
-        `, (error, results) => {
-            if (error) {
-                response.status(500).send(error)
-            }
-            else {
-                response.status(200).send("User created successfully!")
+                pool.query(`
+                INSERT INTO users (username, password)
+                VALUES ('${username}', '${hashedPassword}')
+                RETURNING username, password, date_created
+            `, (error, results) => {
+                    if (error) {
+                        response.status(500).send(error)
+                    }
+                    else {
+                        response.status(200).json(results.rows[0])
+                    }
+                })
             }
         })
     },
