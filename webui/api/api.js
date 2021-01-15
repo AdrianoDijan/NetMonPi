@@ -7,7 +7,7 @@ const cookieParser = require('cookie-parser');
 const app = express();
 const influxQueries = require('./src/influxDbQueries')
 const pgQueries = require('./src/postgreSqlQueries')
-const withAuth = require('./src/middleware').withAuth;
+const { withAuth, currentUser } = require('./src/middleware');
 
 app.use(bodyParser.json());
 app.use(cookieParser());
@@ -34,12 +34,18 @@ app.get('/api/v1/services/:mac', withAuth, pgQueries.getServicesByMac)
 app.get('/api/v1/exploits/:serviceid', withAuth, pgQueries.getExploitsByService)
 app.get('/api/v1/info', withAuth, pgQueries.getNetworkInfo)
 
-app.get('/api/v1/checkToken', withAuth, (request, response) => {
+app.get('/checkToken', withAuth, (request, response) => {
     response.sendStatus(200);
 });
 
-app.post('/api/v1/login', pgQueries.login)
-app.post('/api/v1/register', pgQueries.register)
+app.post('/authenticate', pgQueries.login)
+app.post('/register', pgQueries.register)
+app.get('/logout', (request, response) => {
+    response.clearCookie("token")
+    response.sendStatus(200)
+})
+app.get('/currentUser', withAuth, currentUser)
+app.post('/changePassword', withAuth, pgQueries.changePassword)
 
 
 app.get('*', (req, res) => {

@@ -2,7 +2,7 @@ const pg = require('pg')
 const axios = require('axios')
 const publicIp = require('public-ip')
 const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
+var jwt = require('jsonwebtoken');
 
 const pool = new pg.Pool({
     user: 'postgres',
@@ -164,4 +164,44 @@ module.exports = {
             }
         })
     },
+    changePassword: (request, response) => {
+        const saltRounds = 10;
+        let { password, newPassword } = request.body;
+
+        pool.query(`
+            SELECT * 
+            FROM users
+            WHERE username = $1
+        `, [username], (error, results) => {
+            if (error) {
+                throw error
+            }
+            bcrypt.compare(password, results.rows[0].password, (error, same) => {
+                if (same) {
+                    bcrypt.hash(newPassword, saltRounds, (error, hashedPassword) => {
+                        if (error) {
+                            throw (error)
+                        }
+                        else {
+                            pool.query(`
+                                UPDATE users 
+                                SET password = ${hashedPassword}
+                                WHERE username = ${usename}
+                            `, (error, results) => {
+                                if (error) {
+                                    response.status(500).send(error)
+                                }
+                                else {
+                                    response.sendStatus(200)
+                                }
+                            })
+                        }
+                    })
+                }
+                else {
+                    response.status(401).send("Unauthorized")
+                }
+            })
+        })
+    }
 }
