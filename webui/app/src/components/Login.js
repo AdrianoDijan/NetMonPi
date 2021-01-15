@@ -29,7 +29,7 @@ class Login extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    fetch('/api/v1/login', 
+    fetch('/authenticate', 
         {
           method: 'POST',
           body: JSON.stringify(this.state),

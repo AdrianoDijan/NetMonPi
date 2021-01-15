@@ -1,5 +1,5 @@
 import React from 'react'
-import { CardContent, Grid, Typography, Card, CardActions, Button, Dialog } from '@material-ui/core';
+import { CardContent, Grid, Typography, Card, CardActions, Button, Dialog, Hidden } from '@material-ui/core';
 import moment from 'moment'
 import SpeedIcon from '@material-ui/icons/Speed';
 import LaunchIcon from '@material-ui/icons/Launch';
@@ -53,7 +53,7 @@ class Speedtest extends React.Component {
                             </Grid>
                         </Grid>
                         <Grid container direction="column" justify="center">
-                            <Grid item container direction={'row'} justify="space-between" >
+                            <Grid item container direction={'row'} justify="space-between">
                                 <Grid item>
                                     <ArrowDownwardIcon fontSize='large' />
                                 </Grid>

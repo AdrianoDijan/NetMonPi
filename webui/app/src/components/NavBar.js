@@ -1,10 +1,11 @@
 import React from 'react';
-import { AppBar, Toolbar, Typography, IconButton } from '@material-ui/core';
+import { AppBar, Toolbar, Typography, IconButton, Button } from '@material-ui/core';
 import NetworkCheckIcon from '@material-ui/icons/NetworkCheck';
 import BrightnessAutoIcon from '@material-ui/icons/BrightnessAuto';
 import Brightness4Icon from '@material-ui/icons/Brightness4';
 import BrightnessHighIcon from '@material-ui/icons/BrightnessHigh';
 import SettingsIcon from '@material-ui/icons/Settings';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 export default class NavBar extends React.Component {
   constructor (props) {
@@ -35,6 +36,16 @@ export default class NavBar extends React.Component {
             </IconButton>
             <IconButton color="inherit" onClick={() => {this.props.handleSettingsButton()}}>
               <SettingsIcon />
+            </IconButton>
+            <IconButton onClick={() => {
+              fetch('/logout')
+              .then((response) => {
+                if (response.status === 200) {
+                  window.location.href = '/';
+                }
+              })
+            }}>
+              <ExitToAppIcon/>
             </IconButton>
           </Toolbar>
         </AppBar>
