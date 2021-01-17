@@ -123,7 +123,7 @@ def PreprocessData():
     # =============================================================================
     # X = receive_bitrate_dataset[[range(0,(len(receive_bitrate_dataset)))],[0]]
     # y = receive_bitrate_dataset[[range(0,round(len(receive_bitrate_dataset)))],[1]]
-    plt.plot(np.transpose(receive_bitrate_dataset_X),np.transpose(receive_bitrate_dataset_y))
-    plt.show() # counter for num of bytes in overflows faster --> more traffic coming in than out
+    #plt.plot(np.transpose(receive_bitrate_dataset_X),np.transpose(receive_bitrate_dataset_y))
+    #plt.show() # counter for num of bytes in overflows faster --> more traffic coming in than out
     # =============================================================================
     return transmit_bitrate_dataset_X, transmit_bitrate_dataset_y, receive_bitrate_dataset_X, receive_bitrate_dataset_y
