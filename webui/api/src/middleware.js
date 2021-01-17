@@ -17,20 +17,5 @@ const withAuth = function(request, response, next) {
   }
 }
 
-const currentUser = (request, response) => {
-  const token = request.cookies.token;
 
-  if (!token) {
-    response.status(401).send('Unauthorized: No token provided')
-  } else {
-    jwt.verify(token, secret, (error, decoded) => {
-      if (error) {
-        response.status(401).send('Unauthorized: Invalid token');
-      } else {
-        response.status(200).json({username: decoded.username})
-      }
-    })
-  }
-} 
-
-module.exports = {withAuth: withAuth, currentUser: currentUser};
+module.exports = {withAuth: withAuth};

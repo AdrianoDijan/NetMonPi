@@ -7,7 +7,7 @@ const cookieParser = require('cookie-parser');
 const app = express();
 const influxQueries = require('./src/influxDbQueries')
 const pgQueries = require('./src/postgreSqlQueries')
-const { withAuth, currentUser } = require('./src/middleware');
+const { withAuth } = require('./src/middleware');
 
 app.use(bodyParser.json());
 app.use(cookieParser());
@@ -44,7 +44,7 @@ app.get('/logout', (request, response) => {
     response.clearCookie("token")
     response.sendStatus(200)
 })
-app.get('/currentUser', withAuth, currentUser)
+app.get('/currentUser', withAuth, pgQueries.currentUser)
 app.post('/changePassword', withAuth, pgQueries.changePassword)
 
 

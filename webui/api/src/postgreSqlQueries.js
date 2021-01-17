@@ -127,7 +127,7 @@ module.exports = {
                     if (same) {
                         const payload = { username };
                         const token = jwt.sign(payload, secret, {
-                            expiresIn: '24h'
+                            expiresIn: 1000 * 60 * 60,
                         });
                         response.cookie('token', token, { httpOnly: true }).sendStatus(200);
                     }
@@ -166,7 +166,10 @@ module.exports = {
     },
     changePassword: (request, response) => {
         const saltRounds = 10;
-        let { password, newPassword } = request.body;
+        let { username, password, newPassword } = request.body;
+
+        console.log(password)
+        console.log(newPassword)
 
         pool.query(`
             SELECT * 
@@ -185,10 +188,11 @@ module.exports = {
                         else {
                             pool.query(`
                                 UPDATE users 
-                                SET password = ${hashedPassword}
-                                WHERE username = ${usename}
+                                SET password = '${hashedPassword}'
+                                WHERE username = '${username}'
                             `, (error, results) => {
                                 if (error) {
+                                    console.log(error)
                                     response.status(500).send(error)
                                 }
                                 else {
@@ -203,5 +207,25 @@ module.exports = {
                 }
             })
         })
+    },
+    currentUser: (request, response) => {
+        const token = request.cookies.token;
+
+        if (!token) {
+            response.status(401).send('Unauthorized: No token provided')
+        } else {
+            jwt.verify(token, secret, (error, decoded) => {
+                if (error) {
+                    response.status(401).send('Unauthorized: Invalid token');
+                } else {
+                    pool.query(`
+                        SELECT * FROM users
+                        WHERE username = '${decoded.username}'
+                    `, (error, results) => {
+                        response.status(200).json(results.rows[0])
+                    })
+                }
+            })
+        }
     }
 }
