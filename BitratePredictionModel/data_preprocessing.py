@@ -7,7 +7,7 @@ Created on Tue Dec 15 12:43:05 2020
 def PreprocessData():
     import numpy as np
     import pandas as pd
-    import matplotlib.pyplot as plt #maknuti poslije
+    #import matplotlib.pyplot as plt #maknuti poslije
     
     pd.set_option('mode.chained_assignment','raise')
     
