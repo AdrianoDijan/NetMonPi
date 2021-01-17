@@ -1,9 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Sat Jan 16 11:38:30 2021
-
-@author: Marko
-"""
 def AlgorithmTraining():
     from data_preprocessing import PreprocessData
     from sklearn.model_selection import train_test_split, cross_validate, learning_curve
@@ -65,5 +60,3 @@ def AlgorithmTraining():
     print(best_model_transmit.score(X_test_out,y_test_out))
                                                      
     return best_model_receive, best_model_transmit
-
-AlgorithmTraining()
