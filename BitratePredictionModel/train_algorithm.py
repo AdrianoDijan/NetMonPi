@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 def AlgorithmTraining():
     from data_preprocessing import PreprocessData
-    from sklearn.model_selection import train_test_split, cross_validate, learning_curve
+    from sklearn.model_selection import train_test_split, cross_validate #,learning_curve
     from sklearn.linear_model import Ridge
     import numpy as np
     
