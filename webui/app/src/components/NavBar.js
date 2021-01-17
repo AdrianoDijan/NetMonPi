@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppBar, Toolbar, Typography, IconButton, Button } from '@material-ui/core';
+import { AppBar, Toolbar, Typography, IconButton } from '@material-ui/core';
 import NetworkCheckIcon from '@material-ui/icons/NetworkCheck';
 import BrightnessAutoIcon from '@material-ui/icons/BrightnessAuto';
 import Brightness4Icon from '@material-ui/icons/Brightness4';
@@ -37,7 +37,7 @@ export default class NavBar extends React.Component {
             <IconButton color="inherit" onClick={() => {this.props.handleSettingsButton()}}>
               <SettingsIcon />
             </IconButton>
-            <IconButton onClick={() => {
+            <IconButton color="inherit" onClick={() => {
               fetch('/logout')
               .then((response) => {
                 if (response.status === 200) {

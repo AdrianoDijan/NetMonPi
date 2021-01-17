@@ -34,7 +34,7 @@ class StatusCard extends React.Component {
                     <Grid container direction="column" spacing={1}>
                         <Grid item container direction={"row"} justify="space-between">
                             <Grid item xs>
-                                <Title> Informacije o mreži </Title>
+                                <Title> Network information </Title>
                             </Grid>
                             <Grid item>
                                 <InfoIcon fontSize="large" />

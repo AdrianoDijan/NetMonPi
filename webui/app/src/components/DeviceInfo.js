@@ -11,12 +11,12 @@ class DeviceInfo extends React.Component {
     super(props)
     this.state = { services: [], servicesLoaded: false, selectedExploit: null }
     this.columns = [
-      { field: 'product', headerName: 'Naziv', width: 250 },
-      { field: 'version', headerName: 'Verzija', width: 250 },
+      { field: 'product', headerName: 'Name', width: 250 },
+      { field: 'version', headerName: 'Version', width: 250 },
       { field: 'port', headerName: 'Port', width: 100 },
-      { field: 'protocol', headerName: 'Protokol', width: 100 },
+      { field: 'protocol', headerName: 'Protocol', width: 100 },
       {
-        field: 'exploits', headerName: 'Ranjivosti', width: 400,
+        field: 'exploits', headerName: 'Vulnerabilities', width: 400,
         renderCell: (params) => {
           return (
             <Grid container direction="row" spacing={1}>
@@ -91,7 +91,7 @@ class DeviceInfo extends React.Component {
         <DialogTitle>
           <Grid item container direction={'row'} justify="space-between">
             <Grid item xs>
-              <Title> Informacije o uređaju </Title>
+              <Title> Device information </Title>
             </Grid>
             <Grid item>
               <DevicesIcon fontSize='large' />
@@ -116,7 +116,7 @@ class DeviceInfo extends React.Component {
               <Grid item container direction={'row'} justify="space-between" >
                 <Grid item>
                   <Typography display='inline' variant='h6'>
-                    IP adresa
+                    IP adress
                   </Typography>
                 </Grid>
                 <Grid item>
@@ -128,7 +128,7 @@ class DeviceInfo extends React.Component {
               <Grid item container direction={'row'} justify="space-between" >
                 <Grid item>
                   <Typography display='inline' variant='h6'>
-                    MAC adresa
+                    MAC adress
                   </Typography>
                 </Grid>
                 <Grid item>
@@ -153,7 +153,7 @@ class DeviceInfo extends React.Component {
                 &nbsp;
               </Typography>
               <Typography variant="h5">
-                Otvoreni portovi
+                Open ports
               </Typography>
               <div style={{ width: '100%', height: 300 }}>
                   <DataGrid rows={this.state.services}
@@ -183,7 +183,7 @@ class DeviceInfo extends React.Component {
                   <Grid container direction="column" spacing={1}>
                     <Grid item container direction="row">
                       <Grid item xs>
-                        <Typography>CVE Broj</Typography>
+                        <Typography>CVE Number</Typography>
                       </Grid>
                       <Grid item>
                         {this.state.selectedExploit ? this.state.selectedExploit.cve_number : null}
@@ -191,7 +191,7 @@ class DeviceInfo extends React.Component {
                     </Grid>
                     <Grid item container direction="row">
                       <Grid item xs>
-                        <Typography>Razina opasnosti</Typography>
+                        <Typography>Level of danger</Typography>
                       </Grid>
                       <Grid item>
                         {this.state.selectedExploit ? this.state.selectedExploit.base_score : null}
@@ -199,7 +199,7 @@ class DeviceInfo extends React.Component {
                     </Grid>
                     <Grid item container direction="row">
                       <Grid item xs>
-                        <Typography>Opis</Typography>
+                        <Typography>Description</Typography>
                       </Grid>
                       <Grid item>
                         {this.state.selectedExploit ? this.state.selectedExploit.description : null}
@@ -207,7 +207,7 @@ class DeviceInfo extends React.Component {
                     </Grid>
                     <Grid item>
                       <Button endIcon={<OpenInNewIcon />} color="inherit" target="_blank" href={this.state.selectedExploit ? this.state.selectedExploit.reference_source : ""}>
-                        Više informacija
+                        More information
                       </Button>
                     </Grid>
                   </Grid>
@@ -217,8 +217,8 @@ class DeviceInfo extends React.Component {
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={this.props.handleClose} color="primary">
-            Zatvori
+          <Button onClick={this.props.handleClose} color="inherit">
+            Close
           </Button>
         </DialogActions>
       </Dialog>

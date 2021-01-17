@@ -6,8 +6,10 @@ import {
 } from "react-router-dom";
 import Dashboard from './Dashboard'
 import Login from './components/Login'
+import Register from './components/Register'
 import './App.css';
 import withAuth from './components/withAuth'
+
 
 
 class App extends React.Component {
@@ -22,6 +24,7 @@ class App extends React.Component {
         <Switch>
           <Route exact path="/dashboard" component={withAuth(Dashboard)} />
           <Route exact path="/" component={Login} />
+          <Route exact path="/register" component={Register} />
         </Switch>
       </Router>
     )

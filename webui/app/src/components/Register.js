@@ -1,12 +1,11 @@
 import React from 'react'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import { CssBaseline, TextField, Grid, Button, Card, CardContent, Collapse } from '@material-ui/core'
-import { Alert } from '@material-ui/lab'
+import { CssBaseline, TextField, Grid, Button, Card, CardContent } from '@material-ui/core'
 import Title from './Title'
 import { ThemeProvider } from '@material-ui/core/styles';
 import { darkTheme, lightTheme } from '../themes'
 
-class Login extends React.Component {
+class Register extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -29,7 +28,7 @@ class Login extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    fetch('/authenticate',
+    fetch('/register',
       {
         method: 'POST',
         body: JSON.stringify(this.state),
@@ -41,13 +40,7 @@ class Login extends React.Component {
     )
       .then(response => {
         if (response.status === 200) {
-          this.props.history.push("/dashboard")
-        } else if (response.status === 404) {
-          this.setState({ alertOpen: true, alertMessage: "User not found!" })
-          this.alertTimeout = setTimeout(() => { this.setState({ alertOpen: false }) }, 5000)
-        } else if (response.status === 401) {
-          this.setState({ alertOpen: true, alertMessage: "Wrong password!" })
-          this.alertTimeout = setTimeout(() => { this.setState({ alerOpen: false }) }, 5000)
+          this.props.history.push("/")
         }
       })
   }
@@ -71,17 +64,9 @@ class Login extends React.Component {
                     </Grid>
                     <Grid item>
                       <Title>
-                        Login
+                        Register
                       </Title>
                     </Grid>
-                  </Grid>
-                  <Grid item>
-                    <Collapse in={this.state.alertOpen}>
-                      <Alert severity="error">
-                        {this.state.alertMessage}
-                      </Alert>
-                      &nbsp;
-                    </Collapse>
                   </Grid>
                   <form noValidate onSubmit={this.handleSubmit}>
                     <Grid container direction="column" spacing={2}>
@@ -100,11 +85,8 @@ class Login extends React.Component {
                         />
                       </Grid>
                       <Grid item container direction="row" justify="flex-end">
-                        <Grid item xs>
-                          <Button onClick={() => { window.location.href = '/register' }}> Register </Button>
-                        </Grid>
                         <Grid item>
-                          <Button type="submit"> Login </Button>
+                          <Button type="submit"> Register </Button>
                         </Grid>
                       </Grid>
                     </Grid>
@@ -119,4 +101,4 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+export default Register;

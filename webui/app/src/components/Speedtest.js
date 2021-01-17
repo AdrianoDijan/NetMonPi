@@ -1,5 +1,5 @@
 import React from 'react'
-import { CardContent, Grid, Typography, Card, CardActions, Button, Dialog, Hidden } from '@material-ui/core';
+import { CardContent, Grid, Typography, Card, CardActions, Button, Dialog } from '@material-ui/core';
 import moment from 'moment'
 import SpeedIcon from '@material-ui/icons/Speed';
 import LaunchIcon from '@material-ui/icons/Launch';
@@ -98,7 +98,7 @@ class Speedtest extends React.Component {
                 </CardContent>
                 <CardActions>
                     <Button color='inherit' size='small' endIcon={<LaunchIcon />} onClick={() => { this.setState({ dialogOpen: true }) }}>
-                        Prikaži rezultate
+                        Show results
                     </Button>
                     <TableDialog open={this.state.dialogOpen} url={this.state.data["url"]} maxWidth={'sm'} handleClose={() => { this.setState({ dialogOpen: false }) }} />
                 </CardActions>

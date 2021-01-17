@@ -31,7 +31,7 @@ class DeviceCount extends React.Component {
                     <Grid container direction="column" spacing={1}>
                         <Grid item container direction={"row"} justify="space-between">
                             <Grid item xs>
-                                <Title> Povezano uređaja </Title>
+                                <Title> Devices connected </Title>
                             </Grid>
                             <Grid item>
                                 <ComputerIcon fontSize="large" />
@@ -51,7 +51,7 @@ class DeviceCount extends React.Component {
                         this.setState({dialogOpen: true})
                         // document.querySelector("#deviceTable").scrollIntoView({ behavior: 'smooth' });
                     }}>
-                        <LaunchIcon fontSize="small" /> Detalji
+                        <LaunchIcon fontSize="small" /> Details
                     </Button>
                 </CardActions>
                 <TableDialog

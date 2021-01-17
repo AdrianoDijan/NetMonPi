@@ -1,30 +1,79 @@
 import React from 'react';
-import { Tab, Dialog, DialogContent, DialogActions, Grid, Button, TextField, Typography } from '@material-ui/core'
-import TabContext from '@material-ui/lab/TabContext';
-import TabList from '@material-ui/lab/TabList';
-import TabPanel from '@material-ui/lab/TabPanel';
-import StatusCard from './StatusCard';
-import { SettingsEthernet as SettingsEthernetIcon, AccountCircle as AccountCircleIcon } from '@material-ui/icons';
+import { Tab, Dialog, DialogContent, DialogActions, Grid, Button, TextField, Typography, Collapse } from '@material-ui/core'
+import { TabContext, TabList, TabPanel, Alert } from '@material-ui/lab';
+import { AccountCircle as AccountCircleIcon } from '@material-ui/icons';
 import Title from './Title'
-import SettingsIcon from '@material-ui/icons/Settings';
 
 class SettingsDialog extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      tabValue: 'networkSettings',
+      tabValue: 'userSettings',
       currentUser: {
         username: '',
         date_created: '',
-        oldPassword: '',
+        oldPassword: '********',
         newPassword: '',
       },
       passwordChange: false,
       interface: '',
       scanInterval: '',
+      showPasswordChangeAlert: false,
+      showPasswordError: false,
+      showPasswordSuccess: false,
     }
   }
 
+  componentDidMount() {
+    fetch('/currentUser')
+      .then(response => response.json())
+      .then(response => {
+        this.setState({
+          currentUser: {
+            username: response.username,
+            date_created: new Date(response.date_created).toLocaleString(),
+            oldPassword: this.state.currentUser.oldPassword,
+            newPassword: this.state.currentUser.newPassword,
+          },
+        })
+      })
+  }
+
+  componentWillUnmount() {
+    if (this.alertTimeout) {
+      clearTimeout(this.alertTimeout)
+    }
+  }
+
+  handlePasswordChange = (event) => {
+    event.preventDefault()
+    console.log(this.state)
+    fetch('/changePassword', {
+      method: 'POST',
+      body: JSON.stringify(
+        {
+          username: this.state.currentUser.username,
+          password: this.state.currentUser.oldPassword,
+          newPassword: this.state.currentUser.newPassword
+        }
+      ),
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+    })
+      .then(response => {
+        if (response.status === 200) {
+          this.setState({ showPasswordChangeAlert: true, showPasswordSuccess: true })
+          this.alertTimeout = setTimeout(() => { this.setState({ showPasswordChangeAlert: false }) }, 5000)
+        }
+        else if (response.status === 401) {
+          this.setState({ showPasswordChangeAlert: true, showPasswordError: true })
+          this.alertTimeout = setTimeout(() => { this.setState({ showPasswordChangeAlert: false }) }, 5000)
+        }
+      })
+      .catch(error => { console.log(error) })
+  }
 
   render() {
     return (
@@ -41,35 +90,10 @@ class SettingsDialog extends React.Component {
             <Grid container direction="row">
               <Grid item>
                 <TabList style={{ flexContainerVertical: { display: 'flex', alignItems: 'center' } }} orientation="vertical" onChange={(event, newValue) => { this.setState({ tabValue: newValue }) }}>
-                  <Tab id={0} label={<SettingsEthernetIcon />} value="networkSettings" />
                   <Tab id={1} label={<AccountCircleIcon />} value="userSettings" />
-                  <Tab id={2} label={<SettingsIcon />} value="settings" />
                 </TabList>
               </Grid>
               <Grid item xs>
-                <TabPanel value="networkSettings">
-                  <Grid container direction="column" spacing={3}>
-                    <Grid item>
-                      <Typography variant='h4'>Network settings</Typography>
-                    </Grid>
-                    <Grid item container direction="row" style={{ marginLeft: '20px' }}>
-                      <Grid item>
-                        <TextField id="Interface" value={this.state.interface}
-                          onChange={(event) => {
-                            this.setState({ interface: event.target.value });
-                          }} label="Interface" variant="outlined" />
-                      </Grid>
-                    </Grid>
-                    <Grid item container direction="row" style={{ marginLeft: '20px' }}>
-                      <Grid item>
-                        <TextField id="Interval" value={this.state.scanInterval}
-                          onChange={(event) => {
-                            this.setState({ scanInterval: event.target.value });
-                          }} variant="outlined" label="Scan interval" />
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                </TabPanel>
                 <TabPanel value="userSettings">
                   <Grid container direction="column" spacing={3}>
                     <Grid item>
@@ -77,14 +101,14 @@ class SettingsDialog extends React.Component {
                     </Grid>
                     <Grid item container direction="row" spacing={4}>
                       <Grid item>
-                        <TextField id="Username" value={this.state.username} onChange={(event) => {
+                        <TextField disabled id="Username" value={this.state.currentUser.username} onChange={(event) => {
                           this.setState({ scanInterval: event.target.value });
                         }} label="Username" variant="outlined" style={{ marginLeft: '20px' }}></TextField>
                       </Grid>
                     </Grid>
                     <Grid item container direction="row">
                       <Grid item>
-                        <TextField id="date_created" value={this.state.date_created} label='Date created' variant='outlined' style={{ marginLeft: '20px' }} onChange={(event) => {
+                        <TextField id="date_created" disabled value={this.state.currentUser.date_created} label='Date created' variant='outlined' style={{ marginLeft: '20px' }} onChange={(event) => {
                           this.setState({ scanInterval: event.target.value });
                         }} />
                       </Grid>
@@ -96,24 +120,46 @@ class SettingsDialog extends React.Component {
                                         </Title>
                       </Grid>
                     </Grid>
-                    <form noValidate onSubmit={() => { }}>
+                    <form noValidate onSubmit={this.handlePasswordChange}>
                       <Grid item container direction="column" spacing={1}>
-                        <Grid item container direction="row" spacing={3} alignItems="center" style={{ marginLeft: '20px' }} xs={10} md={12}>
-                          <Grid item md={6}>
+                        <Grid item>
+                          <Collapse in={this.state.showPasswordChangeAlert}>
+                            <Alert severity={this.state.showPasswordError ? "error" : "success"}>
+                              {this.state.showPasswordError ? "Wrong password!" : "Password changed successfully!"}
+                            </Alert>
+                          </Collapse>
+                        </Grid>
+                        <Grid item container direction="row" spacing={3} alignItems="center" style={{ marginLeft: '20px' }} xs={12} md={12}>
+                          <Grid item md={6} xs={11}>
                             <TextField id="oldPassword"
                               value={this.state.currentUser.oldPassword} type='password'
                               variant='outlined' label={!this.state.passwordChange ? "Password" : "Old password"}
                               onChange={(event) => {
                                 this.setState({
                                   currentUser: {
-                                    oldPassword: event.target.value
+                                    username: this.state.currentUser.username,
+                                    date_created: this.state.currentUser.date_created,
+                                    oldPassword: event.target.value,
+                                    newPassword: this.state.currentUser.newPassword,
                                   },
                                   passwordChange: true,
                                 }
                                 )
-                              }} onFocus={() => { this.setState({ passwordChange: true }) }} />
+                              }} onFocus={() => {
+                                this.setState({ passwordChange: true });
+                                if (this.state.currentUser.oldPassword === '********') {
+                                  this.setState({
+                                    currentUser: {
+                                      username: this.state.currentUser.username,
+                                      date_created: this.state.currentUser.date_created,
+                                      oldPassword: '',
+                                      newPassword: this.state.currentUser.newPassword,
+                                    },
+                                  })
+                                }
+                              }} />
                           </Grid>
-                          <Grid item md={6}>
+                          <Grid item md={6} xs={11}>
                             {this.state.passwordChange ?
                               <TextField id="newPassword"
                                 value={this.state.currentUser.newPassword} type='password'
@@ -121,8 +167,11 @@ class SettingsDialog extends React.Component {
                                 onChange={(event) => {
                                   this.setState({
                                     currentUser: {
-                                      newPassword: event.target.value
-                                    }
+                                      username: this.state.currentUser.username,
+                                      date_created: this.state.currentUser.date_created,
+                                      oldPassword: this.state.currentUser.oldPassword,
+                                      newPassword: event.target.value,
+                                    },
                                   }
                                   )
                                 }} />
@@ -147,7 +196,7 @@ class SettingsDialog extends React.Component {
         <DialogActions>
           <Button onClick={this.props.handleClose}>
             Close
-                    </Button>
+          </Button>
         </DialogActions>
       </Dialog>
     )

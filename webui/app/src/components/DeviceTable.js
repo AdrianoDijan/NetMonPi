@@ -59,7 +59,7 @@ class DeviceTable extends React.Component {
                 <Card>
                     <CardContent>
                         <Title>
-                            Online uređaji
+                            Online devices
                         </Title>
                         <div style={{ height: 600, width: '100%' }}>
                             <DataGrid sortModel={[{ field: 'ip', sort: 'asc' }]} onRowClick={(RowParams => { this.setState({ selectedDevice: RowParams, dialogOpen: true }) })} rows={this.state.data} columns={this.columns} autoPageSize={true} disableSelectionOnClick={true} loading={!this.state.isLoaded} />
@@ -74,7 +74,7 @@ class DeviceTable extends React.Component {
                 <Card>
                     <CardContent>
                         <Title>
-                            Online uređaji
+                            Online devices
                         </Title>
                         <div style={{ height: 600, width: '100%' }}>
                             <DataGrid sortModel={[{ field: 'ip', sort: 'asc' }]} onRowClick={(RowParams => { this.setState({ selectedDevice: RowParams, dialogOpen: true }) })} rows={this.state.data} columns={this.columns} autoPageSize={true} disableSelectionOnClick={true} loading={!this.state.isLoaded} />

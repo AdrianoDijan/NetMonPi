@@ -14,7 +14,7 @@ class TableDialog extends React.Component {
                 aria-labelledby="max-width-dialog-title"
                 scroll="body"
             >
-                <DialogTitle id="max-width-dialog-title">Online uređaji</DialogTitle>
+                <DialogTitle id="max-width-dialog-title">Online devices</DialogTitle>
                 <DialogContent>
                     <Container maxWidth={'xl'}>
                     <DeviceTable />
@@ -22,7 +22,7 @@ class TableDialog extends React.Component {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={this.props.handleClose} color="primary">
-                        Zatvori
+                        Close
                     </Button>
                 </DialogActions>
             </Dialog>
