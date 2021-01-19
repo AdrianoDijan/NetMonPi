@@ -5,11 +5,11 @@ const bcrypt = require('bcrypt')
 var jwt = require('jsonwebtoken');
 
 const pool = new pg.Pool({
-    user: 'postgres',
-    host: '10.10.0.9',
+    user: process.env.POSTGRES_USER,
+    host: process.env.POSTGRES_HOST,
     database: 'netmonpi',
-    password: 'MyikObi14hOS',
-    port: 5433,
+    password: process.env.POSTGRES_PASSWORD,
+    port: process.env.POSTGRES_PORT,
 })
 
 const secret = "wX65FYILUZOFSi9C7UhcL7ke6tRyx9wbMbTQy3p+ZXI0ymAOnyIPkhqIVwaleYnwO2aDn39beLplRsO67Ejl+n7And39vgbZ71gEK/C48Tr2Od5nBHWD6RCtxTGbxoxoeV/JsyHb+qMrgA9EmmDKEeHVbubbp+HVlC3/x5+AHWJU40abE1ykX4jSw7AsLk5035XIsIhfRTDWc3kEmY7XMyCmwGdYYpk3srFQFQ=="

@@ -2,8 +2,8 @@ from influxdb import InfluxDBClient
 from datetime import datetime
 import logging
 
-def writeInterfaceMeasurement(host, if_dict):
-    client = InfluxDBClient("10.10.0.9", 8086)
+def writeInterfaceMeasurement(host, if_dict, influxconf):
+    client = InfluxDBClient(influxconf['host'], influxconf['port'])
 
     dbs = 0
 
@@ -47,8 +47,8 @@ from influxdb import InfluxDBClient
 from datetime import datetime
 import logging
 
-def writeSpeedtestMeasurement(host, result_dict):
-    client = InfluxDBClient("10.10.0.9", 8086)
+def writeSpeedtestMeasurement(host, result_dict, influxconf):
+    client = InfluxDBClient(influxconf['host'], influxconf['port'])
 
     dbs = 0
 

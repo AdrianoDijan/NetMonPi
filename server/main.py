@@ -1,4 +1,4 @@
-from netscanner.network import Interface
+from netscanner.network import Interface, Network
 from snmpmonitor import snmp, influx
 
 from vulnscanner.getcvedata import GetCveData
@@ -6,9 +6,8 @@ from vulnscanner.getapiresponse import GetApiResponse
 from vulnscanner.dbcommunicator import DbCommunication
 from vulnscanner.importexploitdata import ImportExploitData
 
-import sys
+import os
 import logging
-import json
 import time
 import threading
 import psycopg2
@@ -17,17 +16,42 @@ import speedtest
 import argparse
 import configparser
 
+def getSnmpDevices():
+    devices = []
+    for key in os.environ.items():
+        if "SNMP_" in key:
+            device = {}
+            if "IP" in key:
+                device['ip'] = os.environ.get(key)
+            if "COMMUNITY" in key:
+                device['community'] = os.environ.get(key)
+            devices.append(device)
+    return devices
+
 def main():
-    parser = argparse.ArgumentParser()
+    config = {
+        "database": {
+            "host": os.environ.get("POSTGRES_HOST"),
+            "port": os.environ.get("POSTGRES_PORT"),
+            "dbname": "netmonpi",
+            "user": os.environ.get("POSTGRES_USER"),
+            "password": os.environ.get("POSTGRES_PASSWORD")
+        },
+        "snmp": getSnmpDevices(),
+        "network": {
+            "interface": os.environ.get("NETWORK_IF"),
+            "network": os.environ.get("NETWORK_ADDR"),
+            "host": os.environ.get("NETWORK_HOST"),
+            "gateway": os.environ.get("NETWORK_GATEWAY"),
+            "netmask": os.environ.get("NETWORK_NETMASK")
+        },
+        "influxdb": {
+            "host": os.environ.get("INFLUX_HOST"),
+            "port": os.environ.get("INFLUX_PORT")
+        }
+    }
 
-    parser.add_argument('-c', '--config', type=str, help='Configuration file path', metavar='path', default="~/.config/netmonpi.conf")
-    parser.add_argument('-v', '--verbosity', type=str, help='Log level: DEBUG, INFO, WARNING, ERROR', metavar='LEVEL', choices=['DEBUG', 'INFO', 'WARNING', 'ERROR'], default='WARNING')
-
-    args = parser.parse_args()
-
-    config = configParser(args.config)
-
-    loglevel = getattr(logging, args.verbosity.upper(), None)
+    loglevel = getattr(logging, "DEBUG", None)
 
     logging.basicConfig(level=loglevel,
                         format='%(asctime)s %(levelname)-8s %(message)s')
@@ -35,8 +59,8 @@ def main():
 
     snmpThreads = []
     
-    for device in config['snmp']['devices'].split(','):
-        snmpThread = threading.Thread(target=snmpMonitoring, args=(config[device],))
+    for device in config['snmp']:
+        snmpThread = threading.Thread(target=snmpMonitoring, args=(device,config,))
         snmpThreads.append(snmpThread)
 
     for thread in snmpThreads:
@@ -45,7 +69,7 @@ def main():
     daemonThread = threading.Thread(target=loopDaemon, args=(config['database'], config['network']))
     daemonThread.start()
 
-    speedtestThread = threading.Thread(target=speedtestDaemon, args=(config['network'],))
+    speedtestThread = threading.Thread(target=speedtestDaemon, args=(config,))
     speedtestThread.start()
 
     daemonThread.join()
@@ -61,7 +85,7 @@ def configParser(configFile):
     return {s:dict(config.items(s)) for s in config.sections()}
 
 
-def runSpeedtest(network):
+def runSpeedtest(config):
     threads = 4
     logging.info("Running speedtest")
     st = speedtest.Speedtest()
@@ -78,7 +102,7 @@ def runSpeedtest(network):
         "url": results["share"],
     }
 
-    influx.writeSpeedtestMeasurement(network['network'], results)
+    influx.writeSpeedtestMeasurement(config['network']['network'], results, config['influxdb'])
 
 def speedtestDaemon(device):
     while True:
@@ -86,12 +110,12 @@ def speedtestDaemon(device):
         time.sleep(30*60)
 
 
-def snmpMonitoring(device):
+def snmpMonitoring(device, config):
     while True:
         try:
             results = snmp.getInterfaceData(device['ip'], device['community'])
             for interface in results:
-                influx.writeInterfaceMeasurement(device['ip'], interface)
+                influx.writeInterfaceMeasurement(device['ip'], interface, config['influxdb'])
         except:
             pass
         time.sleep(1)
@@ -105,7 +129,7 @@ def loopDaemon(database, network):
             vulnScanner(database)
         vulnScannerCount+=1
 
-def daemon(database, network):
+def daemon(database, network_conf):
     connStr = "dbname=%(dbname)s user=%(user)s host=%(host)s password='%(password)s' port=%(port)s" % database
     try:
         dbConn = psycopg2.connect(connStr)
@@ -116,13 +140,14 @@ def daemon(database, network):
         logging.error("Connection to database failed")
         raise e
 
-    try:
-        interface = Interface(network['interface'])
-    except Exception as e:
-        logging.error("Error fetching interface data: {}".format(e))
-        raise e
+    # try:
+    #     interface = Interface(network['interface'])
+    # except Exception as e:
+    #     logging.error("Error fetching interface data: {}".format(e))
         
-    network = interface.getNetwork()
+
+    network = Network(network_conf['network'].split('/')[0], network_conf['netmask'])
+
     queryValues = network.as_dict()
     query = """
             SELECT netaddr FROM network 
@@ -141,7 +166,10 @@ def daemon(database, network):
                 VALUES(%(netaddr)s, %(interface_name)s, %(network)s, %(netmask)s)
                 """
         queryValues = network.as_dict()
-        queryValues['interface_name'] = interface.as_dict()['name']
+        try:
+            queryValues['interface_name'] = interface.as_dict()['name']
+        except:
+            queryValues['interface_name'] = network_conf['interface']
         cursor.execute(query, queryValues)
         dbConn.commit()
 

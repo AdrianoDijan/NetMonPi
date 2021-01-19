@@ -1,11 +1,11 @@
 const Influx = require('influx');
-const influx = new Influx.InfluxDB('http://10.10.0.9:8086/netmonpi');
+const influx = new Influx.InfluxDB(`http://${process.env.INFLUX_HOST}:${process.env.INFLUX_PORT}/netmonpi`);
 
 influx.getMeasurements()
     .catch(error => console.log({ error }));
 
-host = "10.10.0.1"
-interface = "pppoe0"
+host = process.env.ROUTER_IP
+interface = process.env.WAN_IF
 
 module.exports = {
     getLastDayBandwidth: (request, response) => {

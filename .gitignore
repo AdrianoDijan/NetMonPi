@@ -23,7 +23,6 @@ yarn.lock
 
 *.pyc
 __pycache__
-*.json
 
 .eslintcache
 

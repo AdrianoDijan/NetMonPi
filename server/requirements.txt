@@ -1,9 +1,9 @@
-python3-nmap
+python3-nmap===1.4.8
 netifaces
 getmac
 ipaddress
 mac-vendor-lookup
-easysnmp
+pysnmp
 influxdb
 psycopg2
 speedtest-cli

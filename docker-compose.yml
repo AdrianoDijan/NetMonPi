@@ -1,0 +1,27 @@
+services:
+  postgresql:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.postgresql
+    env_file: .env
+    ports:
+      - ${POSTGRES_PORT}:5432
+  influxdb:
+    image: influxdb:latest
+    ports:
+      - ${INFLUX_PORT}:8086
+  server:
+      build:
+        context: ./server
+      image: netmonpi-server
+      env_file: .env
+      cap_add: 
+        - NET_ADMIN
+        - CAP_NET_RAW
+  webui:
+    build:
+      context: ./webui
+    image: netmonpi-webui
+    env_file: .env
+    ports:
+      - ${WEBUI_PORT}:3080
