@@ -22,4 +22,4 @@ RUN npm run build --loglevel verbose
 WORKDIR /usr/src/app/api
 
 EXPOSE 3080
-CMD ["npm", "run", "dev"]
+CMD ["node", "./api.js"]

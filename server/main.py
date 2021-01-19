@@ -18,14 +18,10 @@ import configparser
 
 def getSnmpDevices():
     devices = []
-    for key in os.environ.items():
-        if "SNMP_" in key:
-            device = {}
-            if "IP" in key:
-                device['ip'] = os.environ.get(key)
-            if "COMMUNITY" in key:
-                device['community'] = os.environ.get(key)
-            devices.append(device)
+    for key in dict(os.environ):
+        if "SNMP_" in key and "IP" in key:
+            index = key.split("_")[1]
+            devices.append({"ip": os.environ.get("SNMP_"+index+"_IP"), "community": os.environ.get("SNMP_"+index+"_COMMUNITY")})
     return devices
 
 def main():
@@ -51,14 +47,14 @@ def main():
         }
     }
 
-    loglevel = getattr(logging, "DEBUG", None)
+    loglevel = getattr(logging, "INFO", None)
 
     logging.basicConfig(level=loglevel,
                         format='%(asctime)s %(levelname)-8s %(message)s')
     logging.info("START")
 
     snmpThreads = []
-    
+
     for device in config['snmp']:
         snmpThread = threading.Thread(target=snmpMonitoring, args=(device,config,))
         snmpThreads.append(snmpThread)
@@ -137,14 +133,15 @@ def daemon(database, network_conf):
         logging.info("Connected to database [DB: {0}, host: {1}, port: {2}]".format(
                                 database['dbname'], database['host'], database['port']))
     except Exception as e:
-        logging.error("Connection to database failed")
-        raise e
-
-    # try:
-    #     interface = Interface(network['interface'])
-    # except Exception as e:
-    #     logging.error("Error fetching interface data: {}".format(e))
-        
+        try:
+            time.sleep(15)
+            dbConn = psycopg2.connect(connStr)
+            cursor = dbConn.cursor()
+            logging.info("Connected to database [DB: {0}, host: {1}, port: {2}]".format(
+                                database['dbname'], database['host'], database['port']))
+        except Exception as e:
+                logging.error("Connection to database failed")
+                raise e
 
     network = Network(network_conf['network'].split('/')[0], network_conf['netmask'])
 

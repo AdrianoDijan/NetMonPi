@@ -54,7 +54,7 @@ class Register extends React.Component {
       <ThemeProvider theme={this.state.useDark ? darkTheme() : lightTheme()}>
         <CssBaseline />
         <Grid container justify="center" alignItems="center" direction="column" style={{ minHeight: "100vh" }}>
-          <Grid item xs={3}>
+          <Grid item xs={10} md={3}>
             <Card>
               <CardContent>
                 <Grid container direction="column" justfiy="center" spacing={2}>

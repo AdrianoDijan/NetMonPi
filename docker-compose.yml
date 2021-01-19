@@ -1,27 +1,33 @@
+version: "3.4"
 services:
   postgresql:
     build:
       context: .
       dockerfile: ./Dockerfile.postgresql
     env_file: .env
+    restart: unless-stopped
     ports:
       - ${POSTGRES_PORT}:5432
   influxdb:
     image: influxdb:latest
+    restart: unless-stopped
     ports:
       - ${INFLUX_PORT}:8086
   server:
-      build:
-        context: ./server
-      image: netmonpi-server
-      env_file: .env
-      cap_add: 
-        - NET_ADMIN
-        - CAP_NET_RAW
+    build:
+      context: ./server
+    image: netmonpi-server
+    restart: unless-stopped
+    env_file: .env
+    network_mode: host
+    cap_add: 
+      - NET_ADMIN
+      - CAP_NET_RAW
   webui:
     build:
       context: ./webui
     image: netmonpi-webui
+    restart: unless-stopped
     env_file: .env
     ports:
       - ${WEBUI_PORT}:3080

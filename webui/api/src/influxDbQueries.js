@@ -1,10 +1,10 @@
 const Influx = require('influx');
-const influx = new Influx.InfluxDB(`http://${process.env.INFLUX_HOST}:${process.env.INFLUX_PORT}/netmonpi`);
+const influx = new Influx.InfluxDB(`http://influxdb:8086/netmonpi`);
 
 influx.getMeasurements()
     .catch(error => console.log({ error }));
 
-host = process.env.ROUTER_IP
+host = process.env.NETWORK_GATEWAY
 interface = process.env.WAN_IF
 
 module.exports = {
