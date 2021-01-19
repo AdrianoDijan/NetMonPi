@@ -7,4 +7,4 @@ docker-build:
   before_script:
     - docker info
   script:
-    - docker-compose --verbose build
+    - docker-compose --env-file ./sample.env --verbose build
