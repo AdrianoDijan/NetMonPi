@@ -1,5 +1,6 @@
 docker-build:
   before_script:
     - docker info
+    - cp sample.env .env
   script:
     - docker-compose --env-file ./sample.env --verbose build
