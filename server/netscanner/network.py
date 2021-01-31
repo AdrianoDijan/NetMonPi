@@ -52,32 +52,35 @@ class Network():
         )
         
     def findHosts(self, threadPool):
-        nmap = nmap3.NmapScanTechniques()
-        logging.info("Network findHosts")
-        if str(self._netaddr) not in ("UNKNOWN", "127.0.0.1"):
-            logging.info("Finding hosts for interface {}".format(str(ipaddress.IPv4Interface(
-                str(self._netaddr) + '/' + str(self._netmask)))))
-            results = nmap.nmap_ping_scan(
-                str(self._netaddr) + '/' + str(self._net.prefixlen))
-            for host in results:
-                try:
-                    if host['reason'] != 'localhost-reponse':
-                        ip = "0.0.0.0"
-                        mac = "00:00:00:00:00:00"
-                        try:
-                            hostname = host['hostname'][0]['name']
-                        except IndexError:
-                            hostname = "UNKNOWN"
-                        for addr in host['addresses']:
-                            if addr['addrtype'] == 'ipv4':
-                                ip = addr['addr']
-                            elif addr['addrtype'] == 'mac':
-                                mac = addr['addr']
-                        thread = threading.Thread(target=self.createHost, args=(ip, mac, hostname))
-                        threadPool.append(thread)
-                        thread.start()
-                except:
-                    print(host)
+        try:
+            nmap = nmap3.NmapScanTechniques()
+            logging.info("Network findHosts")
+            if str(self._netaddr) not in ("UNKNOWN", "127.0.0.1"):
+                logging.info("Finding hosts for interface {}".format(str(ipaddress.IPv4Interface(
+                    str(self._netaddr) + '/' + str(self._netmask)))))
+                results = nmap.nmap_ping_scan(
+                    str(self._netaddr) + '/' + str(self._net.prefixlen))
+                for host in results:
+                    try:
+                        if host['reason'] != 'localhost-reponse':
+                            ip = "0.0.0.0"
+                            mac = "00:00:00:00:00:00"
+                            try:
+                                hostname = host['hostname'][0]['name']
+                            except IndexError:
+                                hostname = "UNKNOWN"
+                            for addr in host['addresses']:
+                                if addr['addrtype'] == 'ipv4':
+                                    ip = addr['addr']
+                                elif addr['addrtype'] == 'mac':
+                                    mac = addr['addr']
+                            thread = threading.Thread(target=self.createHost, args=(ip, mac, hostname))
+                            threadPool.append(thread)
+                            thread.start()
+                    except:
+                        print(host)
+        except:
+            pass
             
     def getHosts(self):
         return self._hosts
